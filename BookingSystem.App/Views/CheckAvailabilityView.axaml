@@ -1,0 +1,167 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="700"
+             x:Class="BookingSystem.App.Views.CheckAvailabilityView"
+             Background="Transparent">
+
+    <UserControl.Styles>
+        <Style Selector="Border.CalendarHeader">
+            <Setter Property="Background" Value="#F8F9FA"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Padding" Value="10"/>
+        </Style>
+        <Style Selector="TextBlock.DayHeader">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#666"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+        <Style Selector="Border.CalendarDay">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#F0F0F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="MinHeight" Value="100"/>
+            <Setter Property="Padding" Value="10"/>
+        </Style>
+        <Style Selector="TextBlock.DayNumber">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="Foreground" Value="#333"/>
+        </Style>
+        
+        <!-- Legend Indicators -->
+        <Style Selector="Ellipse.Indicator">
+            <Setter Property="Width" Value="10"/>
+            <Setter Property="Height" Value="10"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
+        </Style>
+
+        <!-- Booking Tag -->
+        <Style Selector="Border.BookingTag">
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Padding" Value="6,4"/>
+            <Setter Property="Margin" Value="0,5,0,0"/>
+        </Style>
+        <Style Selector="TextBlock.BookingTagText">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+        </Style>
+    </UserControl.Styles>
+
+    <StackPanel Spacing="25">
+        <!-- Header Controls -->
+        <Border Background="White" CornerRadius="10" Padding="20" BoxShadow="0 2 5 0 #0A000000">
+            <Grid ColumnDefinitions="Auto, Auto, *, Auto">
+                <StackPanel Grid.Column="0" Spacing="8">
+                    <TextBlock Text="Conference Hall" FontWeight="SemiBold" FontSize="14" Foreground="#333"/>
+                    <Border Background="#F8F9FA" Padding="15,10" CornerRadius="6" BorderBrush="#E0E0E0" BorderThickness="1" Width="250">
+                        <TextBlock Text="Main Conference Hall" VerticalAlignment="Center" FontWeight="Medium"/>
+                    </Border>
+                </StackPanel>
+
+                <Button Grid.Column="1" Content="Today" Margin="20,25,0,0" Background="#F0F0F0" Foreground="#333" Padding="15,8" FontWeight="Medium"/>
+
+                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Bottom" Spacing="15">
+                    <Button Content="‹" FontSize="20" Background="Transparent" Padding="10,0"/>
+                    <TextBlock Text="May 2024" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="#1A1A1A"/>
+                    <Button Content="›" FontSize="20" Background="Transparent" Padding="10,0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Calendar Container -->
+        <Border Background="White" CornerRadius="10" Padding="1" BoxShadow="0 4 10 0 #0D000000" ClipToBounds="True">
+            <StackPanel>
+                <!-- Day of Week Headers -->
+                <UniformGrid Columns="7" Background="#F8F9FA" Height="50">
+                    <TextBlock Text="SUN" Classes="DayHeader" VerticalAlignment="Center"/>
+                    <TextBlock Text="MON" Classes="DayHeader" VerticalAlignment="Center"/>
+                    <TextBlock Text="TUE" Classes="DayHeader" VerticalAlignment="Center"/>
+                    <TextBlock Text="WED" Classes="DayHeader" VerticalAlignment="Center"/>
+                    <TextBlock Text="THU" Classes="DayHeader" VerticalAlignment="Center"/>
+                    <TextBlock Text="FRI" Classes="DayHeader" VerticalAlignment="Center"/>
+                    <TextBlock Text="SAT" Classes="DayHeader" VerticalAlignment="Center"/>
+                </UniformGrid>
+
+                <!-- Calendar Grid -->
+                <UniformGrid Columns="7">
+                    <!-- Week 1 -->
+                    <Border Classes="CalendarDay" Opacity="0.5"><TextBlock Text="28" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay" Opacity="0.5"><TextBlock Text="29" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay" Opacity="0.5"><TextBlock Text="30" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="1" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="2" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="3" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="4" Classes="DayNumber"/></Border>
+
+                    <!-- Week 2 -->
+                    <Border Classes="CalendarDay"><TextBlock Text="5" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="6" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="7" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="8" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="9" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="10" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="11" Classes="DayNumber"/></Border>
+
+                    <!-- Week 3 -->
+                    <Border Classes="CalendarDay"><TextBlock Text="12" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay">
+                        <StackPanel>
+                            <TextBlock Text="13" Classes="DayNumber"/>
+                            <Border Classes="BookingTag" Background="#E6F4EA">
+                                <TextBlock Text="10:00 AM - Staff Meeting" Classes="BookingTagText" Foreground="#1E8E3E"/>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="14" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="15" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="16" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="17" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="18" Classes="DayNumber"/></Border>
+
+                    <!-- Week 4 -->
+                    <Border Classes="CalendarDay"><TextBlock Text="19" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="20" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="21" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay">
+                        <StackPanel>
+                            <TextBlock Text="22" Classes="DayNumber"/>
+                            <Border Classes="BookingTag" Background="#FFF7E6">
+                                <TextBlock Text="09:00 AM - Monthly Review" Classes="BookingTagText" Foreground="#FA8C16"/>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="23" Classes="DayNumber"/></Border>
+                    <Border Classes="CalendarDay">
+                        <StackPanel>
+                            <TextBlock Text="24" Classes="DayNumber"/>
+                            <Border Classes="BookingTag" Background="#FCE8E8">
+                                <TextBlock Text="08:00 AM - Private Event" Classes="BookingTagText" Foreground="#D93025"/>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                    <Border Classes="CalendarDay"><TextBlock Text="25" Classes="DayNumber"/></Border>
+                </UniformGrid>
+            </StackPanel>
+        </Border>
+
+        <!-- Legend -->
+        <StackPanel Orientation="Horizontal" Spacing="30">
+            <StackPanel Orientation="Horizontal">
+                <Ellipse Fill="#E6F4EA" Classes="Indicator"/>
+                <TextBlock Text="Available" VerticalAlignment="Center" Foreground="#666"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Ellipse Fill="#FFF7E6" Classes="Indicator"/>
+                <TextBlock Text="Partially Booked" VerticalAlignment="Center" Foreground="#666"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Ellipse Fill="#FCE8E8" Classes="Indicator"/>
+                <TextBlock Text="Fully Booked" VerticalAlignment="Center" Foreground="#666"/>
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

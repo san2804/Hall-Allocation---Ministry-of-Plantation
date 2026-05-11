@@ -1,0 +1,92 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
+             x:Class="BookingSystem.App.Views.NotificationsView">
+
+    <UserControl.Styles>
+        <Style Selector="Border.NotifItem">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="BoxShadow" Value="0 2 5 0 #0A000000"/>
+        </Style>
+    </UserControl.Styles>
+
+    <StackPanel Spacing="25">
+        <Grid ColumnDefinitions="*, Auto">
+            <TextBlock Grid.Column="0" Text="Notifications" FontSize="22" FontWeight="Bold" Foreground="#1A1A1A"/>
+            <Button Grid.Column="1" Content="Mark all as read" Background="Transparent" Foreground="#1a5d38" FontWeight="SemiBold"/>
+        </Grid>
+
+        <ScrollViewer>
+            <StackPanel>
+                <!-- Notification 1 (Approved) -->
+                <Border Classes="NotifItem">
+                    <Grid ColumnDefinitions="4, *">
+                        <Border Grid.Column="0" Background="#1E8E3E" CornerRadius="2"/>
+                        <Grid Grid.Column="1" ColumnDefinitions="Auto, *, Auto" Margin="15,0,0,0">
+                            <TextBlock Grid.Column="0" Text="✅" FontSize="20" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="Booking Approved" FontWeight="Bold" FontSize="15" Foreground="#1A1A1A"/>
+                                <TextBlock Text="Your booking for Main Conference Hall on 22 May 2024 has been successfully approved by the admin." 
+                                           TextWrapping="Wrap" FontSize="14" Foreground="#666" Margin="0,4,0,0"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Text="10 min ago" FontSize="12" Foreground="#999" VerticalAlignment="Top"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!-- Notification 2 (Pending) -->
+                <Border Classes="NotifItem">
+                    <Grid ColumnDefinitions="4, *">
+                        <Border Grid.Column="0" Background="#FA8C16" CornerRadius="2"/>
+                        <Grid Grid.Column="1" ColumnDefinitions="Auto, *, Auto" Margin="15,0,0,0">
+                            <TextBlock Grid.Column="0" Text="⏳" FontSize="20" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="New Booking Request" FontWeight="Bold" FontSize="15" Foreground="#1A1A1A"/>
+                                <TextBlock Text="A new booking request for a Staff Meeting on 25 May 2024 is currently awaiting your review." 
+                                           TextWrapping="Wrap" FontSize="14" Foreground="#666" Margin="0,4,0,0"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Text="2 hours ago" FontSize="12" Foreground="#999" VerticalAlignment="Top"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!-- Notification 3 (System) -->
+                <Border Classes="NotifItem">
+                    <Grid ColumnDefinitions="4, *">
+                        <Border Grid.Column="0" Background="#1a5d38" CornerRadius="2"/>
+                        <Grid Grid.Column="1" ColumnDefinitions="Auto, *, Auto" Margin="15,0,0,0">
+                            <TextBlock Grid.Column="0" Text="📢" FontSize="20" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="System Update" FontWeight="Bold" FontSize="15" Foreground="#1A1A1A"/>
+                                <TextBlock Text="The Conference Hall Booking System will be undergoing scheduled maintenance this Sunday from 2 AM to 4 AM." 
+                                           TextWrapping="Wrap" FontSize="14" Foreground="#666" Margin="0,4,0,0"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Text="Yesterday" FontSize="12" Foreground="#999" VerticalAlignment="Top"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!-- Notification 4 (Rejected) -->
+                <Border Classes="NotifItem">
+                    <Grid ColumnDefinitions="4, *">
+                        <Border Grid.Column="0" Background="#D93025" CornerRadius="2"/>
+                        <Grid Grid.Column="1" ColumnDefinitions="Auto, *, Auto" Margin="15,0,0,0">
+                            <TextBlock Grid.Column="0" Text="❌" FontSize="20" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock Text="Booking Rejected" FontWeight="Bold" FontSize="15" Foreground="#1A1A1A"/>
+                                <TextBlock Text="Unfortunately, your booking for 20 May 2024 was rejected due to a prior maintenance schedule." 
+                                           TextWrapping="Wrap" FontSize="14" Foreground="#666" Margin="0,4,0,0"/>
+                            </StackPanel>
+                            <TextBlock Grid.Column="2" Text="2 days ago" FontSize="12" Foreground="#999" VerticalAlignment="Top"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </StackPanel>
+</UserControl>

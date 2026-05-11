@@ -1,0 +1,152 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:BookingSystem.App.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="1440" d:DesignHeight="900"
+        x:Class="BookingSystem.App.Views.DashboardWindow"
+        x:DataType="vm:DashboardWindowViewModel"
+        Title="Conference Hall Booking System - Dashboard"
+        Width="1440" Height="900"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F7F9">
+
+    <Window.Styles>
+        <!-- Sidebar Menu Item Style -->
+        <Style Selector="Button.MenuBtn">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#D0E3D8"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Margin" Value="10,2"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+        </Style>
+        <Style Selector="Button.MenuBtn:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#17502E"/>
+            <Setter Property="TextBlock.Foreground" Value="White"/>
+        </Style>
+        <Style Selector="Button.MenuBtn.Active /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#2A7A44"/>
+            <Setter Property="TextBlock.Foreground" Value="White"/>
+        </Style>
+
+        <!-- Card Style -->
+        <Style Selector="Border.Card">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="20"/>
+            <!-- Avalonia uses BoxShadows. We'll simulate a light shadow -->
+            <Setter Property="BoxShadow" Value="0 4 10 0 #0D000000"/>
+            <Setter Property="BorderBrush" Value="#EAEAEA"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+        
+        <!-- Stat Card Style -->
+        <Style Selector="Border.StatCard">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="BoxShadow" Value="0 2 5 0 #0A000000"/>
+            <Setter Property="BorderBrush" Value="#EAEAEA"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+        
+        <!-- Status Badges -->
+        <Style Selector="Border.BadgeApproved">
+            <Setter Property="Background" Value="#E6F4EA"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Padding" Value="8,4"/>
+        </Style>
+        <Style Selector="TextBlock.BadgeApprovedText">
+            <Setter Property="Foreground" Value="#1E8E3E"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style Selector="Border.BadgePending">
+            <Setter Property="Background" Value="#FFF7E6"/>
+            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Padding" Value="8,4"/>
+        </Style>
+        <Style Selector="TextBlock.BadgePendingText">
+            <Setter Property="Foreground" Value="#FA8C16"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+    </Window.Styles>
+
+    <Grid ColumnDefinitions="260, *">
+        <!-- Sidebar -->
+        <Border Grid.Column="0" Background="#0C3D20">
+            <Grid RowDefinitions="Auto, *, Auto">
+                
+                <!-- Logo & Title -->
+                <StackPanel Grid.Row="0" Margin="20,30,20,20" Orientation="Horizontal" Spacing="10">
+                    <Image Source="avares://BookingSystem.App/Assets/logo.png" Width="40" Height="40"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Conference Hall" Foreground="White" FontWeight="Bold" FontSize="14"/>
+                        <TextBlock Text="Booking System" Foreground="#A9C7B6" FontSize="12"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Navigation Menu -->
+                <ScrollViewer Grid.Row="1">
+                    <StackPanel>
+                        <Button Name="DashboardBtn" Classes="MenuBtn Active" Content="Dashboard" Click="MenuBtn_Click"/>
+                        
+                        <!-- Normal User Only -->
+                        <Button Name="AvailabilityBtn" Classes="MenuBtn" Content="Check Availability" Click="MenuBtn_Click" IsVisible="{Binding IsNormalUser}"/>
+                        <Button Name="MyBookingsBtn" Classes="MenuBtn" Content="My Bookings" Click="MenuBtn_Click" IsVisible="{Binding IsNormalUser}"/>
+                        <Button Name="NewBookingBtn" Classes="MenuBtn" Content="New Booking" Click="MenuBtn_Click" IsVisible="{Binding IsNormalUser}"/>
+                        
+                        <!-- Admin Only -->
+                        <Button Name="ManageBookingsBtn" Classes="MenuBtn" Content="Manage Bookings" Click="MenuBtn_Click" IsVisible="{Binding IsAdmin}"/>
+                        <Button Name="ReportsBtn" Classes="MenuBtn" Content="Reports" Click="MenuBtn_Click" IsVisible="{Binding IsAdmin}"/>
+                        <Button Name="ManageUsersBtn" Classes="MenuBtn" Content="Manage Users" Click="MenuBtn_Click" IsVisible="{Binding IsAdmin}"/>
+                        <Button Name="SystemSettingsBtn" Classes="MenuBtn" Content="System Settings" Click="MenuBtn_Click" IsVisible="{Binding IsAdmin}"/>
+
+                        <!-- Shared -->
+                        <Button Name="HallsBtn" Classes="MenuBtn" Content="Hall Details" Click="MenuBtn_Click"/>
+                        <Button Name="NotificationsBtn" Classes="MenuBtn" Content="Notifications" Click="MenuBtn_Click"/>
+                        <Button Name="ProfileBtn" Classes="MenuBtn" Content="Profile" Click="MenuBtn_Click"/>
+                        <Button Name="HelpBtn" Classes="MenuBtn" Content="Help" Click="MenuBtn_Click"/>
+                    </StackPanel>
+                </ScrollViewer>
+                
+                <!-- Logout -->
+                <Button Grid.Row="2" Classes="MenuBtn" Content="Logout" Margin="10,10,10,20" />
+            </Grid>
+        </Border>
+
+        <!-- Main Content Area -->
+        <Grid Grid.Column="1" RowDefinitions="Auto, *">
+            
+            <!-- Top Header -->
+            <Border Grid.Row="0" Background="White" Height="70" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="30,0">
+                <Grid ColumnDefinitions="Auto, *, Auto">
+                    <TextBlock Name="PageTitle" Grid.Column="0" Text="Dashboard" VerticalAlignment="Center" FontSize="22" FontWeight="Bold" Foreground="#1A1A1A"/>
+                    
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Spacing="20">
+                        <TextBlock Text="🔔" FontSize="20" VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <!-- Placeholder for User Avatar -->
+                            <Border Width="40" Height="40" CornerRadius="20" Background="#E0E0E0">
+                                <TextBlock Text="NP" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="#666"/>
+                            </Border>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="Nimal Perera" FontWeight="SemiBold" FontSize="14"/>
+                                <TextBlock Text="Officer" FontSize="12" Foreground="#666"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Dynamic Content Area -->
+            <ContentControl Name="MainContent" Grid.Row="1" />
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,97 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
+             x:Class="BookingSystem.App.Views.HelpView">
+
+    <UserControl.Styles>
+        <Style Selector="Border.FaqCard">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+        <Style Selector="TextBlock.Question">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Foreground" Value="#1A1A1A"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+        <Style Selector="TextBlock.Answer">
+            <Setter Property="Foreground" Value="#666"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="LineHeight" Value="22"/>
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer>
+        <StackPanel Spacing="30" Margin="0,0,0,30">
+            <!-- Header -->
+            <TextBlock Text="Help &amp; Support" FontSize="22" FontWeight="Bold" Foreground="#1A1A1A"/>
+
+            <Grid ColumnDefinitions="2*, 1*">
+                <!-- FAQs -->
+                <StackPanel Grid.Column="0" Margin="0,0,30,0">
+                    <TextBlock Text="Frequently Asked Questions" FontSize="18" FontWeight="Bold" Foreground="#1A1A1A" Margin="0,0,0,20"/>
+                    
+                    <Border Classes="FaqCard">
+                        <StackPanel>
+                            <TextBlock Text="How do I make a new booking?" Classes="Question"/>
+                            <TextBlock Text="Navigate to the 'New Booking' tab from the sidebar. The Main Conference Hall is pre-selected. Simply choose your desired date, start and end times, provide a purpose, and click 'Check Availability' to submit your request to the admin for approval." Classes="Answer"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Classes="FaqCard">
+                        <StackPanel>
+                            <TextBlock Text="Can I edit a booking after submitting it?" Classes="Question"/>
+                            <TextBlock Text="You can edit a booking only while its status is 'Pending'. Once approved or rejected, you must contact the admin directly to make changes. To edit, go to 'My Bookings' and click the pencil icon next to the relevant entry." Classes="Answer"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Classes="FaqCard">
+                        <StackPanel>
+                            <TextBlock Text="How will I know if my booking is approved?" Classes="Question"/>
+                            <TextBlock Text="You will receive an in-app notification in the 'Notifications' tab. The status in the 'My Bookings' dashboard will also change from Pending (orange) to Approved (green)." Classes="Answer"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Classes="FaqCard">
+                        <StackPanel>
+                            <TextBlock Text="What facilities are available in the Main Conference Hall?" Classes="Question"/>
+                            <TextBlock Text="The hall is equipped with high-speed WiFi, a 4K projector, a surround sound system, and central air conditioning. You can review the full list of amenities in the 'Hall Details' section." Classes="Answer"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- Contact Support -->
+                <Border Grid.Column="1" Background="White" CornerRadius="12" Padding="30" BoxShadow="0 4 12 0 #0D000000" VerticalAlignment="Top">
+                    <StackPanel Spacing="20">
+                        <TextBlock Text="Need more help?" FontSize="18" FontWeight="Bold" Foreground="#1A1A1A"/>
+                        <TextBlock Text="If you are experiencing technical issues or have a special request that requires immediate attention, please reach out to the system administrator." 
+                                   TextWrapping="Wrap" Foreground="#666" FontSize="14" LineHeight="22"/>
+                        
+                        <Border Background="#F5F7F9" CornerRadius="8" Padding="15">
+                            <StackPanel Spacing="10">
+                                <TextBlock Text="Admin Contact" FontWeight="SemiBold" Foreground="#1a5d38"/>
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <TextBlock Text="✉️" VerticalAlignment="Center"/>
+                                    <TextBlock Text="admin@plantation.gov.lk" Foreground="#333" FontWeight="Medium"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <TextBlock Text="📞" VerticalAlignment="Center"/>
+                                    <TextBlock Text="+94 11 234 5670" Foreground="#333" FontWeight="Medium"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Button Content="Send a Message" Classes="Primary" Background="#1a5d38" Foreground="White" Padding="15" CornerRadius="6" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

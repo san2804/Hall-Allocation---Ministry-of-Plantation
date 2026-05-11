@@ -1,0 +1,86 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+        x:Class="BookingSystem.App.Views.MainWindow"
+        Title="Conference Hall Booking System"
+        Width="1200" Height="800"
+        WindowStartupLocation="CenterScreen">
+        
+    <Window.Styles>
+        <!-- Adding some basic styles for a cleaner look -->
+        <Style Selector="TextBox">
+            <Setter Property="BorderBrush" Value="#E0E0E0" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Background" Value="#FDFDFD" />
+            <Setter Property="Padding" Value="15,10" />
+            <Setter Property="CornerRadius" Value="6" />
+        </Style>
+        <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+            <Setter Property="BorderBrush" Value="#1a5d38" />
+            <Setter Property="BorderThickness" Value="2" />
+        </Style>
+        <Style Selector="Button.Primary">
+            <Setter Property="Background" Value="#1a5d38" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Padding" Value="15" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+        <Style Selector="Button.Primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#14462a" />
+            <Setter Property="TextBlock.Foreground" Value="White" />
+        </Style>
+    </Window.Styles>
+
+    <Grid ColumnDefinitions="*, *">
+        <!-- Left Side (Image) -->
+        <Grid Grid.Column="0">
+            <Image Source="avares://BookingSystem.App/Assets/login_bg.png" Stretch="UniformToFill" />
+            <!-- We removed the StackPanel overlay because the text/logo are already baked into the background image -->
+        </Grid>
+
+        <!-- Right Side (Login Form) -->
+        <Border Grid.Column="1" Background="White" Padding="80, 40">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="1" VerticalAlignment="Center" Spacing="24" MaxWidth="420" HorizontalAlignment="Stretch">
+                    <TextBlock Text="Welcome Back!" FontSize="34" FontWeight="Bold" Foreground="#1A1A1A" />
+                    <TextBlock Text="Please sign in to your account" FontSize="16" Foreground="#666666" Margin="0, -10, 0, 10" />
+
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Username" FontWeight="SemiBold" Foreground="#333333" FontSize="14" />
+                        <TextBox x:Name="UsernameTextBox" PlaceholderText="Enter your username (normal_user / admin)" />
+                    </StackPanel>
+
+                    <StackPanel Spacing="8">
+                        <TextBlock Text="Password" FontWeight="SemiBold" Foreground="#333333" FontSize="14" />
+                        <TextBox x:Name="PasswordTextBox" PlaceholderText="Enter your password" PasswordChar="•" />
+                    </StackPanel>
+
+                    <TextBlock x:Name="ErrorMessageTextBlock" Foreground="#D93025" FontSize="14" HorizontalAlignment="Center" FontWeight="Medium" />
+
+                    <Button Content="Forgot password?" Classes="Link" Background="Transparent" Foreground="#1a5d38" HorizontalAlignment="Right" Padding="0" Cursor="Hand" FontWeight="SemiBold" />
+
+                    <Button Classes="Primary" Content="Login" Margin="0, 10, 0, 0" Click="LoginButton_Click"/>
+
+                    <TextBlock HorizontalAlignment="Center" Margin="0, 10, 0, 0" FontSize="14">
+                        <Run Text="Don't have an account? " Foreground="#666666"/>
+                        <Run Text="Contact Admin" Foreground="#1a5d38" FontWeight="SemiBold"/>
+                    </TextBlock>
+                </StackPanel>
+
+                <TextBlock Grid.Row="2" Text="© 2024 Ministry of Plantation. All rights reserved." Foreground="#999999" FontSize="13" HorizontalAlignment="Center" />
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

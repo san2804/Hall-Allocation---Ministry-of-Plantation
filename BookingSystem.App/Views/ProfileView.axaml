@@ -1,0 +1,122 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
+             x:Class="BookingSystem.App.Views.ProfileView">
+
+    <UserControl.Styles>
+        <Style Selector="TextBlock.FieldLabel">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#666"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+        </Style>
+        <Style Selector="Button.Secondary">
+            <Setter Property="Background" Value="#F5F7F9"/>
+            <Setter Property="Foreground" Value="#333"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer Padding="0">
+        <StackPanel Spacing="30" Margin="0,0,0,30">
+            
+            <!-- Profile Header Card -->
+            <Border Background="White" CornerRadius="12" Padding="40" BoxShadow="0 4 12 0 #0D000000">
+                <StackPanel Orientation="Horizontal" Spacing="30">
+                    <!-- User Avatar Placeholder -->
+                    <Border Width="120" Height="120" CornerRadius="60" Background="#F0F0F0">
+                        <TextBlock Text="NP" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="40" FontWeight="Bold" Foreground="#999"/>
+                    </Border>
+                    
+                    <StackPanel VerticalAlignment="Center" Spacing="10">
+                        <TextBlock Text="Nimal Perera" FontSize="28" FontWeight="Bold" Foreground="#1A1A1A"/>
+                        <TextBlock Text="Administrative Officer" FontSize="16" Foreground="#1a5d38" FontWeight="SemiBold"/>
+                        <TextBlock Text="Ministry of Plantation, Sri Lanka" FontSize="14" Foreground="#666"/>
+                        
+                        <StackPanel Orientation="Horizontal" Spacing="15" Margin="0,10,0,0">
+                            <Button Content="Change Photo" Classes="Primary" Background="#1a5d38" Foreground="White" Padding="20,10" CornerRadius="6"/>
+                            <Button Content="Remove" Classes="Secondary"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Information Grid -->
+            <Grid ColumnDefinitions="*, 30, *">
+                <!-- Personal Information -->
+                <Border Grid.Column="0" Background="White" CornerRadius="12" Padding="30" BoxShadow="0 4 12 0 #0D000000">
+                    <StackPanel Spacing="25">
+                        <TextBlock Text="Personal Information" FontSize="20" FontWeight="Bold" Foreground="#1A1A1A"/>
+                        
+                        <StackPanel>
+                            <TextBlock Text="Full Name" Classes="FieldLabel"/>
+                            <TextBox Text="Nimal Perera" IsEnabled="False"/>
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock Text="Email Address" Classes="FieldLabel"/>
+                            <TextBox Text="nimal.perera@plantation.gov.lk" IsEnabled="False"/>
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock Text="Phone Number" Classes="FieldLabel"/>
+                            <TextBox Text="+94 11 234 5678" />
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock Text="Designation" Classes="FieldLabel"/>
+                            <TextBox Text="Administrative Officer" IsEnabled="False"/>
+                        </StackPanel>
+
+                        <Button Content="Save Changes" Classes="Primary" Background="#1a5d38" Foreground="White" Padding="25,12" CornerRadius="6" HorizontalAlignment="Right"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Account Security -->
+                <Border Grid.Column="2" Background="White" CornerRadius="12" Padding="30" BoxShadow="0 4 12 0 #0D000000" VerticalAlignment="Top">
+                    <StackPanel Spacing="25">
+                        <TextBlock Text="Account Security" FontSize="20" FontWeight="Bold" Foreground="#1A1A1A"/>
+                        
+                        <StackPanel Spacing="15">
+                            <TextBlock Text="Change Password" FontWeight="SemiBold" Foreground="#333"/>
+                            
+                            <StackPanel>
+                                <TextBlock Text="Current Password" Classes="FieldLabel"/>
+                                <TextBox PasswordChar="•" PlaceholderText="••••••••"/>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <TextBlock Text="New Password" Classes="FieldLabel"/>
+                                <TextBox PasswordChar="•" PlaceholderText="••••••••"/>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <TextBlock Text="Confirm New Password" Classes="FieldLabel"/>
+                                <TextBox PasswordChar="•" PlaceholderText="••••••••"/>
+                            </StackPanel>
+
+                            <Button Content="Update Password" Classes="Primary" Background="#1a5d38" Foreground="White" Padding="25,12" CornerRadius="6" HorizontalAlignment="Right" Margin="0,10,0,0"/>
+                        </StackPanel>
+                        
+                        <Separator Background="#F0F0F0" Margin="0,10"/>
+                        
+                        <StackPanel Spacing="15">
+                            <TextBlock Text="Two-Factor Authentication" FontWeight="SemiBold" Foreground="#333"/>
+                            <TextBlock Text="Add an extra layer of security to your account by enabling two-factor authentication." FontSize="13" Foreground="#666" TextWrapping="Wrap"/>
+                            <Button Content="Enable 2FA" Classes="Secondary" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

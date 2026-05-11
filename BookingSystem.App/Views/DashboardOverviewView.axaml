@@ -1,0 +1,83 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
+             x:Class="BookingSystem.App.Views.DashboardOverviewView">
+    
+    <ScrollViewer Padding="30">
+        <StackPanel Spacing="30">
+            <!-- Stats Row -->
+            <UniformGrid Columns="4" Rows="1">
+                <Border Classes="StatCard" Margin="0,0,15,0">
+                    <StackPanel>
+                        <TextBlock Text="Total Bookings" Foreground="#666" FontSize="13" FontWeight="SemiBold"/>
+                        <TextBlock Text="24" FontSize="28" FontWeight="Bold" Margin="0,5,0,0" Foreground="#1A1A1A"/>
+                    </StackPanel>
+                </Border>
+                <Border Classes="StatCard" Margin="0,0,15,0">
+                    <StackPanel>
+                        <TextBlock Text="Upcoming Bookings" Foreground="#666" FontSize="13" FontWeight="SemiBold"/>
+                        <TextBlock Text="5" FontSize="28" FontWeight="Bold" Margin="0,5,0,0" Foreground="#1A1A1A"/>
+                    </StackPanel>
+                </Border>
+                <Border Classes="StatCard" Margin="0,0,15,0">
+                    <StackPanel>
+                        <TextBlock Text="Pending Approvals" Foreground="#666" FontSize="13" FontWeight="SemiBold"/>
+                        <TextBlock Text="3" FontSize="28" FontWeight="Bold" Margin="0,5,0,0" Foreground="#1A1A1A"/>
+                    </StackPanel>
+                </Border>
+                <Border Classes="StatCard">
+                    <StackPanel>
+                        <TextBlock Text="This Month" Foreground="#666" FontSize="13" FontWeight="SemiBold"/>
+                        <TextBlock Text="7" FontSize="28" FontWeight="Bold" Margin="0,5,0,0" Foreground="#1A1A1A"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Main Grid -->
+            <Grid ColumnDefinitions="2*, 1*">
+                <Border Grid.Column="0" Classes="Card" Margin="0,0,20,0" VerticalAlignment="Top">
+                    <StackPanel>
+                        <Grid ColumnDefinitions="*, Auto" Margin="0,0,0,20">
+                            <TextBlock Grid.Column="0" Text="Upcoming Bookings" FontSize="18" FontWeight="Bold" Foreground="#1A1A1A"/>
+                            <Button Grid.Column="1" Content="View All" Background="Transparent" Foreground="#1E8E3E" FontWeight="SemiBold"/>
+                        </Grid>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/><ColumnDefinition Width="3*"/><ColumnDefinition Width="3*"/><ColumnDefinition Width="2*"/><ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Date" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="Hall" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Time" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="0" Grid.Column="3" Text="Purpose" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="0" Grid.Column="4" Text="Status" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
+                            <Border Grid.Row="1" Grid.ColumnSpan="5" BorderBrush="#EEEEEE" BorderThickness="0,0,0,1" Margin="0,0,0,10" Padding="0,0,0,10"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="22 May 2024" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="Main Conference Hall" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="1" Grid.Column="2" Text="09:00 AM - 11:00 AM" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Row="1" Grid.Column="3" Text="Staff Meeting" VerticalAlignment="Center"/>
+                            <Border Grid.Row="1" Grid.Column="4" Classes="BadgeApproved" VerticalAlignment="Center"><TextBlock Text="Approved" Classes="BadgeApprovedText"/></Border>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <StackPanel Grid.Column="1" Spacing="20">
+                    <Border Classes="Card">
+                        <StackPanel>
+                            <TextBlock Text="Quick Actions" FontSize="18" FontWeight="Bold" Foreground="#1A1A1A" Margin="0,0,0,15"/>
+                            <UniformGrid Columns="2" Rows="2">
+                                <Button Content="Check Availability" Background="White" BorderBrush="#EAEAEA" BorderThickness="1" Margin="0,0,10,10" Padding="10,15" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                                <Button Content="New Booking" Background="White" BorderBrush="#EAEAEA" BorderThickness="1" Margin="0,0,0,10" Padding="10,15" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                                <Button Content="My Bookings" Background="White" BorderBrush="#EAEAEA" BorderThickness="1" Margin="0,0,10,0" Padding="10,15" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                                <Button Content="View Halls" Background="White" BorderBrush="#EAEAEA" BorderThickness="1" Padding="10,15" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                            </UniformGrid>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

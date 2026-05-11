@@ -1,0 +1,144 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
+             x:Class="BookingSystem.App.Views.ReportsView">
+
+    <UserControl.Styles>
+        <Style Selector="TextBlock.StatLabel">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#666"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        <Style Selector="TextBlock.StatValue">
+            <Setter Property="FontSize" Value="32"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#1A1A1A"/>
+            <Setter Property="Margin" Value="0,5,0,0"/>
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer>
+        <StackPanel Spacing="30">
+            <!-- Filter Bar -->
+            <Border Background="White" CornerRadius="12" Padding="20" BoxShadow="0 2 5 0 #0A000000">
+                <Grid ColumnDefinitions="Auto, Auto, Auto, *, Auto">
+                    <StackPanel Grid.Column="0" Margin="0,0,20,0">
+                        <TextBlock Text="From Date" FontSize="12" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,5"/>
+                        <DatePicker />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="0,0,20,0">
+                        <TextBlock Text="To Date" FontSize="12" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,5"/>
+                        <DatePicker />
+                    </StackPanel>
+                    <Button Grid.Column="4" Content="Generate Report" Classes="Primary" Background="#1a5d38" Foreground="White" Padding="20,10" CornerRadius="6" VerticalAlignment="Bottom"/>
+                </Grid>
+            </Border>
+
+            <!-- Summary Stats -->
+            <UniformGrid Columns="5" Rows="1">
+                <Border Classes="Card" Margin="0,0,15,0">
+                    <StackPanel>
+                        <TextBlock Text="Total Bookings" Classes="StatLabel"/>
+                        <TextBlock Text="158" Classes="StatValue"/>
+                    </StackPanel>
+                </Border>
+                <Border Classes="Card" Margin="0,0,15,0">
+                    <StackPanel>
+                        <TextBlock Text="Approved" Classes="StatLabel"/>
+                        <TextBlock Text="124" Classes="StatValue" Foreground="#1E8E3E"/>
+                    </StackPanel>
+                </Border>
+                <Border Classes="Card" Margin="0,0,15,0">
+                    <StackPanel>
+                        <TextBlock Text="Pending" Classes="StatLabel"/>
+                        <TextBlock Text="12" Classes="StatValue" Foreground="#FA8C16"/>
+                    </StackPanel>
+                </Border>
+                <Border Classes="Card" Margin="0,0,15,0">
+                    <StackPanel>
+                        <TextBlock Text="Rejected" Classes="StatLabel"/>
+                        <TextBlock Text="8" Classes="StatValue" Foreground="#D93025"/>
+                    </StackPanel>
+                </Border>
+                <Border Classes="Card">
+                    <StackPanel>
+                        <TextBlock Text="Cancelled" Classes="StatLabel"/>
+                        <TextBlock Text="14" Classes="StatValue" Foreground="#666"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- Detailed Analysis -->
+            <Grid ColumnDefinitions="*, *">
+                <!-- Bookings by Purpose -->
+                <Border Grid.Column="0" Classes="Card" Margin="0,0,15,0">
+                    <StackPanel Spacing="20">
+                        <TextBlock Text="Bookings by Purpose" FontSize="18" FontWeight="Bold" Foreground="#1A1A1A"/>
+                        
+                        <StackPanel Spacing="15">
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <TextBlock Text="Staff Meetings" Foreground="#333"/>
+                                    <TextBlock Grid.Column="1" Text="45%" FontWeight="Bold"/>
+                                </Grid>
+                                <ProgressBar Value="45" Height="8" CornerRadius="4" Foreground="#1a5d38" Background="#F0F0F0" Margin="0,8,0,0"/>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <TextBlock Text="Training Sessions" Foreground="#333"/>
+                                    <TextBlock Grid.Column="1" Text="30%" FontWeight="Bold"/>
+                                </Grid>
+                                <ProgressBar Value="30" Height="8" CornerRadius="4" Foreground="#1E8E3E" Background="#F0F0F0" Margin="0,8,0,0"/>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <TextBlock Text="Workshops" Foreground="#333"/>
+                                    <TextBlock Grid.Column="1" Text="15%" FontWeight="Bold"/>
+                                </Grid>
+                                <ProgressBar Value="15" Height="8" CornerRadius="4" Foreground="#2A7A44" Background="#F0F0F0" Margin="0,8,0,0"/>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <TextBlock Text="Private Events" Foreground="#333"/>
+                                    <TextBlock Grid.Column="1" Text="10%" FontWeight="Bold"/>
+                                </Grid>
+                                <ProgressBar Value="10" Height="8" CornerRadius="4" Foreground="#A9C7B6" Background="#F0F0F0" Margin="0,8,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Status Distribution -->
+                <Border Grid.Column="1" Classes="Card">
+                    <StackPanel Spacing="20">
+                        <TextBlock Text="Monthly Occupancy" FontSize="18" FontWeight="Bold" Foreground="#1A1A1A"/>
+                        <!-- Simple visual representation of occupancy trends -->
+                        <Grid Height="200" VerticalAlignment="Bottom" ColumnDefinitions="*, *, *, *, *, *">
+                            <Border Grid.Column="0" Background="#1a5d38" Height="120" VerticalAlignment="Bottom" Margin="10,0" CornerRadius="4,4,0,0"><ToolTip.Tip>Jan: 60%</ToolTip.Tip></Border>
+                            <Border Grid.Column="1" Background="#1a5d38" Height="150" VerticalAlignment="Bottom" Margin="10,0" CornerRadius="4,4,0,0"><ToolTip.Tip>Feb: 75%</ToolTip.Tip></Border>
+                            <Border Grid.Column="2" Background="#1a5d38" Height="100" VerticalAlignment="Bottom" Margin="10,0" CornerRadius="4,4,0,0"><ToolTip.Tip>Mar: 50%</ToolTip.Tip></Border>
+                            <Border Grid.Column="3" Background="#1a5d38" Height="180" VerticalAlignment="Bottom" Margin="10,0" CornerRadius="4,4,0,0"><ToolTip.Tip>Apr: 90%</ToolTip.Tip></Border>
+                            <Border Grid.Column="4" Background="#1a5d38" Height="140" VerticalAlignment="Bottom" Margin="10,0" CornerRadius="4,4,0,0"><ToolTip.Tip>May: 70%</ToolTip.Tip></Border>
+                            <Border Grid.Column="5" Background="#1a5d38" Height="160" VerticalAlignment="Bottom" Margin="10,0" CornerRadius="4,4,0,0"><ToolTip.Tip>Jun: 80%</ToolTip.Tip></Border>
+                        </Grid>
+                        <UniformGrid Columns="6">
+                            <TextBlock Text="Jan" HorizontalAlignment="Center" FontSize="12" Foreground="#666"/>
+                            <TextBlock Text="Feb" HorizontalAlignment="Center" FontSize="12" Foreground="#666"/>
+                            <TextBlock Text="Mar" HorizontalAlignment="Center" FontSize="12" Foreground="#666"/>
+                            <TextBlock Text="Apr" HorizontalAlignment="Center" FontSize="12" Foreground="#666"/>
+                            <TextBlock Text="May" HorizontalAlignment="Center" FontSize="12" Foreground="#666"/>
+                            <TextBlock Text="Jun" HorizontalAlignment="Center" FontSize="12" Foreground="#666"/>
+                        </UniformGrid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Button Content="Export to PDF" HorizontalAlignment="Right" Padding="20,10" Background="#F0F0F0" CornerRadius="6" FontWeight="SemiBold"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

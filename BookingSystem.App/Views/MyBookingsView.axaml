@@ -1,0 +1,167 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
+             x:Class="BookingSystem.App.Views.MyBookingsView">
+
+    <UserControl.Styles>
+        <!-- Tab Button Style -->
+        <Style Selector="Button.TabBtn">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#666"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="CornerRadius" Value="0"/>
+        </Style>
+        <Style Selector="Button.TabBtn:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#F5F7F9"/>
+            <Setter Property="TextBlock.Foreground" Value="#1a5d38"/>
+        </Style>
+        <Style Selector="Button.TabBtn.Active">
+            <Setter Property="Foreground" Value="#1a5d38"/>
+            <Setter Property="BorderBrush" Value="#1a5d38"/>
+        </Style>
+
+        <!-- Action Button Style -->
+        <Style Selector="Button.ActionBtn">
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+    </UserControl.Styles>
+
+    <StackPanel Spacing="25">
+        <!-- Header & Tabs -->
+        <Border Background="White" CornerRadius="12" Padding="20,20,20,0" BoxShadow="0 2 5 0 #0A000000">
+            <StackPanel Spacing="15">
+                <Grid ColumnDefinitions="*, Auto">
+                    <TextBlock Grid.Column="0" Text="My Bookings" FontSize="22" FontWeight="Bold" Foreground="#1A1A1A"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
+                        <TextBox Width="250" PlaceholderText="Search bookings..." InnerLeftContent="🔍"/>
+                        <Button Content="Filter" Background="#F0F0F0" Padding="15,8"/>
+                    </StackPanel>
+                </Grid>
+
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <Button Classes="TabBtn Active" Content="All"/>
+                    <Button Classes="TabBtn" Content="Pending"/>
+                    <Button Classes="TabBtn" Content="Approved"/>
+                    <Button Classes="TabBtn" Content="Rejected"/>
+                    <Button Classes="TabBtn" Content="Cancelled"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Table Card -->
+        <Border Background="White" CornerRadius="12" Padding="25" BoxShadow="0 4 12 0 #0D000000">
+            <StackPanel Spacing="20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/> <!-- Header -->
+                        <RowDefinition Height="Auto"/> <!-- Row 1 -->
+                        <RowDefinition Height="Auto"/> <!-- Row 2 -->
+                        <RowDefinition Height="Auto"/> <!-- Row 3 -->
+                        <RowDefinition Height="Auto"/> <!-- Row 4 -->
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/> <!-- ID -->
+                        <ColumnDefinition Width="2*"/> <!-- Hall -->
+                        <ColumnDefinition Width="2*"/> <!-- Date -->
+                        <ColumnDefinition Width="2*"/> <!-- Time -->
+                        <ColumnDefinition Width="2*"/> <!-- Purpose -->
+                        <ColumnDefinition Width="Auto"/> <!-- Status -->
+                        <ColumnDefinition Width="1.5*"/> <!-- Action -->
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Headers -->
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="ID" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Hall" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Date" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
+                    <TextBlock Grid.Row="0" Grid.Column="3" Text="Time" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
+                    <TextBlock Grid.Row="0" Grid.Column="4" Text="Purpose" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
+                    <TextBlock Grid.Row="0" Grid.Column="5" Text="Status" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15" HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Row="0" Grid.Column="6" Text="Action" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15" HorizontalAlignment="Center"/>
+
+                    <!-- Row 1 -->
+                    <Border Grid.Row="1" Grid.ColumnSpan="7" BorderBrush="#F0F0F0" BorderThickness="0,0,0,1" Margin="0,0,0,15" Padding="0,0,0,15"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="#BK220501" VerticalAlignment="Center" FontWeight="Medium"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="Main Conference Hall" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="22 May 2024" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="1" Grid.Column="3" Text="09:00 AM - 11:00 AM" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="1" Grid.Column="4" Text="Staff Meeting" VerticalAlignment="Center"/>
+                    <Border Grid.Row="1" Grid.Column="5" Classes="BadgeApproved" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="Approved" Classes="BadgeApprovedText"/>
+                    </Border>
+                    <StackPanel Grid.Row="1" Grid.Column="6" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                        <Button Classes="ActionBtn" Content="👁️" ToolTip.Tip="View Details"/>
+                        <Button Classes="ActionBtn" Content="❌" ToolTip.Tip="Cancel Booking"/>
+                    </StackPanel>
+
+                    <!-- Row 2 -->
+                    <Border Grid.Row="2" Grid.ColumnSpan="7" BorderBrush="#F0F0F0" BorderThickness="0,0,0,1" Margin="0,0,0,15" Padding="0,0,0,15"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="#BK230502" VerticalAlignment="Center" FontWeight="Medium"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="Main Conference Hall" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="23 May 2024" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="2" Grid.Column="3" Text="10:00 AM - 12:00 PM" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="2" Grid.Column="4" Text="Training Session" VerticalAlignment="Center"/>
+                    <Border Grid.Row="2" Grid.Column="5" Classes="BadgePending" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="Pending" Classes="BadgePendingText"/>
+                    </Border>
+                    <StackPanel Grid.Row="2" Grid.Column="6" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                        <Button Classes="ActionBtn" Content="👁️"/>
+                        <Button Classes="ActionBtn" Content="✏️"/>
+                        <Button Classes="ActionBtn" Content="❌"/>
+                    </StackPanel>
+
+                    <!-- Row 3 -->
+                    <Border Grid.Row="3" Grid.ColumnSpan="7" BorderBrush="#F0F0F0" BorderThickness="0,0,0,1" Margin="0,0,0,15" Padding="0,0,0,15"/>
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="#BK240503" VerticalAlignment="Center" FontWeight="Medium"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="Main Conference Hall" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="3" Grid.Column="2" Text="24 May 2024" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="3" Grid.Column="3" Text="02:00 PM - 04:00 PM" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="3" Grid.Column="4" Text="Project Discussion" VerticalAlignment="Center"/>
+                    <Border Grid.Row="3" Grid.Column="5" Classes="BadgePending" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="Pending" Classes="BadgePendingText"/>
+                    </Border>
+                    <StackPanel Grid.Row="3" Grid.Column="6" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                        <Button Classes="ActionBtn" Content="👁️"/>
+                        <Button Classes="ActionBtn" Content="✏️"/>
+                        <Button Classes="ActionBtn" Content="❌"/>
+                    </StackPanel>
+
+                    <!-- Row 4 -->
+                    <Border Grid.Row="4" Grid.ColumnSpan="7" BorderBrush="#F0F0F0" BorderThickness="0,0,0,1" Margin="0,0,0,15" Padding="0,0,0,15"/>
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="#BK250504" VerticalAlignment="Center" FontWeight="Medium"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1" Text="Main Conference Hall" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="4" Grid.Column="2" Text="25 May 2024" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="4" Grid.Column="3" Text="01:00 PM - 05:00 PM" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Row="4" Grid.Column="4" Text="Workshop" VerticalAlignment="Center"/>
+                    <Border Grid.Row="4" Grid.Column="5" Classes="BadgeApproved" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock Text="Approved" Classes="BadgeApprovedText"/>
+                    </Border>
+                    <StackPanel Grid.Row="4" Grid.Column="6" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                        <Button Classes="ActionBtn" Content="👁️"/>
+                        <Button Classes="ActionBtn" Content="❌"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Pagination -->
+                <Grid ColumnDefinitions="Auto, *, Auto">
+                    <TextBlock Grid.Column="0" Text="Showing 1 to 4 of 24 entries" Foreground="#666" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5">
+                        <Button Content="Previous" Background="#F0F0F0" Padding="12,6"/>
+                        <Button Content="1" Background="#1a5d38" Foreground="White" Padding="12,6"/>
+                        <Button Content="2" Background="Transparent" Padding="12,6"/>
+                        <Button Content="3" Background="Transparent" Padding="12,6"/>
+                        <Button Content="Next" Background="#F0F0F0" Padding="12,6"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

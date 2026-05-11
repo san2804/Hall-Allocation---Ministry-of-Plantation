@@ -1,0 +1,32 @@
+# User-specific files
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.doccache
+
+# Build results
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Tt]est[Rr]esult*/
+
+# NuGet Packages
+*.nupkg
+# The packages folder can be ignored because of PackageReference usage
+**/packages/*
+!**/packages/build/
+
+# IDE - Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# OS-specific files
+Thumbs.db
+ehthumbs.db
+Desktop.ini

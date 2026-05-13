@@ -1,10 +1,39 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="BookingSystem.App.App"
-             RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+             RequestedThemeVariant="Light">
+             <!-- Force Light theme for consistency with your design -->
 
     <Application.Styles>
         <FluentTheme />
+        
+        <!-- Global Primary Button Style -->
+        <Style Selector="Button.Primary">
+            <Setter Property="Background" Value="#1a5d38" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Padding" Value="20,10" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Background" Duration="0:0:0.2" />
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <!-- Fix for "disappearing" hover: Explicitly set background AND foreground on hover -->
+        <Style Selector="Button.Primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#14462a" />
+            <Setter Property="TextBlock.Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="#14462a" />
+        </Style>
+
+        <!-- Pressed state -->
+        <Style Selector="Button.Primary:pressed /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#0d2e1b" />
+            <Setter Property="TextBlock.Foreground" Value="White" />
+        </Style>
     </Application.Styles>
 </Application>

@@ -49,6 +49,13 @@
             <Setter Property="FontSize" Value="11"/>
             <Setter Property="FontWeight" Value="Medium"/>
         </Style>
+
+        <!-- Input Visibility Fixes -->
+        <Style Selector="TextBox">
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="PlaceholderForeground" Value="#999999"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
     </UserControl.Styles>
 
     <StackPanel Spacing="25">
@@ -58,16 +65,16 @@
                 <StackPanel Grid.Column="0" Spacing="8">
                     <TextBlock Text="Conference Hall" FontWeight="SemiBold" FontSize="14" Foreground="#333"/>
                     <Border Background="#F8F9FA" Padding="15,10" CornerRadius="6" BorderBrush="#E0E0E0" BorderThickness="1" Width="250">
-                        <TextBlock Text="Main Conference Hall" VerticalAlignment="Center" FontWeight="Medium"/>
+                        <TextBlock Text="Main Conference Hall" VerticalAlignment="Center" FontWeight="Medium" Foreground="#333"/>
                     </Border>
                 </StackPanel>
 
                 <Button Grid.Column="1" Content="Today" Margin="20,25,0,0" Background="#F0F0F0" Foreground="#333" Padding="15,8" FontWeight="Medium"/>
 
                 <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Bottom" Spacing="15">
-                    <Button Content="‹" FontSize="20" Background="Transparent" Padding="10,0"/>
+                    <Button Content="‹" FontSize="20" Background="Transparent" Padding="10,0" Foreground="#333"/>
                     <TextBlock Text="May 2024" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="#1A1A1A"/>
-                    <Button Content="›" FontSize="20" Background="Transparent" Padding="10,0"/>
+                    <Button Content="›" FontSize="20" Background="Transparent" Padding="10,0" Foreground="#333"/>
                 </StackPanel>
             </Grid>
         </Border>

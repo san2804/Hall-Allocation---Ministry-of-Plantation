@@ -4,6 +4,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
              x:Class="BookingSystem.App.Views.DashboardOverviewView">
+
+    <UserControl.Styles>
+        <Style Selector="Button.QuickAction">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="BorderBrush" Value="#EAEAEA"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,15"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="CornerRadius" Value="8"/>
+        </Style>
+        <Style Selector="Button.QuickAction:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#F8F9FA"/>
+            <Setter Property="BorderBrush" Value="#2A7A44"/>
+            <Setter Property="TextBlock.Foreground" Value="#2A7A44"/>
+        </Style>
+    </UserControl.Styles>
     
     <ScrollViewer Padding="30">
         <StackPanel Spacing="30">
@@ -56,23 +74,28 @@
                             <TextBlock Grid.Row="0" Grid.Column="3" Text="Purpose" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
                             <TextBlock Grid.Row="0" Grid.Column="4" Text="Status" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
                             <Border Grid.Row="1" Grid.ColumnSpan="5" BorderBrush="#EEEEEE" BorderThickness="0,0,0,1" Margin="0,0,0,10" Padding="0,0,0,10"/>
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="22 May 2024" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1" Text="Main Conference Hall" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="1" Grid.Column="2" Text="09:00 AM - 11:00 AM" VerticalAlignment="Center"/>
-                            <TextBlock Grid.Row="1" Grid.Column="3" Text="Staff Meeting" VerticalAlignment="Center"/>
-                            <Border Grid.Row="1" Grid.Column="4" Classes="BadgeApproved" VerticalAlignment="Center"><TextBlock Text="Approved" Classes="BadgeApprovedText"/></Border>
+                            
+                            <!-- Row 1 -->
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="22 May 2024" VerticalAlignment="Center" Margin="0,5"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="Main Conference Hall" VerticalAlignment="Center" Margin="0,5"/>
+                            <TextBlock Grid.Row="2" Grid.Column="2" Text="09:00 AM - 11:00 AM" VerticalAlignment="Center" Margin="0,5"/>
+                            <TextBlock Grid.Row="2" Grid.Column="3" Text="Staff Meeting" VerticalAlignment="Center" Margin="0,5"/>
+                            <Border Grid.Row="2" Grid.Column="4" Classes="BadgeApproved" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,5">
+                                <TextBlock Text="Approved" Classes="BadgeApprovedText"/>
+                            </Border>
                         </Grid>
                     </StackPanel>
                 </Border>
+
                 <StackPanel Grid.Column="1" Spacing="20">
                     <Border Classes="Card">
                         <StackPanel>
                             <TextBlock Text="Quick Actions" FontSize="18" FontWeight="Bold" Foreground="#1A1A1A" Margin="0,0,0,15"/>
                             <UniformGrid Columns="2" Rows="2">
-                                <Button Content="Check Availability" Background="White" BorderBrush="#EAEAEA" BorderThickness="1" Margin="0,0,10,10" Padding="10,15" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
-                                <Button Content="New Booking" Background="White" BorderBrush="#EAEAEA" BorderThickness="1" Margin="0,0,0,10" Padding="10,15" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
-                                <Button Content="My Bookings" Background="White" BorderBrush="#EAEAEA" BorderThickness="1" Margin="0,0,10,0" Padding="10,15" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
-                                <Button Content="View Halls" Background="White" BorderBrush="#EAEAEA" BorderThickness="1" Padding="10,15" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
+                                <Button Classes="QuickAction" Content="Check Availability" Margin="0,0,10,10"/>
+                                <Button Classes="QuickAction" Content="New Booking" Margin="0,0,0,10"/>
+                                <Button Classes="QuickAction" Content="My Bookings" Margin="0,0,10,0"/>
+                                <Button Classes="QuickAction" Content="View Halls"/>
                             </UniformGrid>
                         </StackPanel>
                     </Border>

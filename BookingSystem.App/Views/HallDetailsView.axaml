@@ -25,7 +25,7 @@
     <ScrollViewer>
         <StackPanel Spacing="30" Margin="0,0,0,30">
             <!-- Header -->
-            <TextBlock Text="Hall Details" FontSize="22" FontWeight="Bold" Foreground="#1A1A1A"/>
+            
 
             <!-- Main Content Card -->
             <Border Background="White" CornerRadius="12" Padding="30" BoxShadow="0 4 12 0 #0D000000">

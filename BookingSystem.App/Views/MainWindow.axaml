@@ -16,20 +16,12 @@
             <Setter Property="Background" Value="#FDFDFD" />
             <Setter Property="Padding" Value="15,10" />
             <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Foreground" Value="#333333" />
+            <Setter Property="PlaceholderForeground" Value="#999999" />
         </Style>
         <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
             <Setter Property="BorderBrush" Value="#1a5d38" />
             <Setter Property="BorderThickness" Value="2" />
-        </Style>
-        <Style Selector="Button.Primary">
-            <Setter Property="Background" Value="#1a5d38" />
-            <Setter Property="Foreground" Value="White" />
-            <Setter Property="Padding" Value="15" />
-            <Setter Property="CornerRadius" Value="6" />
-            <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="FontSize" Value="16" />
-            <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="HorizontalContentAlignment" Value="Center" />
         </Style>
         <Style Selector="Button.Primary:pointerover /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="#14462a" />

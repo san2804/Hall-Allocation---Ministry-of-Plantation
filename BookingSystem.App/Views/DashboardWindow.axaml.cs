@@ -70,10 +70,10 @@ namespace BookingSystem.App.Views
 
         private async Task HandleLogout()
         {
-            var box = MessageBoxManager.GetMessageBoxStandard("Logout", "Are you sure you want to logout?", ButtonEnum.YesNo, Icon.Question);
+            var box = MessageBoxManager.GetMessageBoxStandard("Logout", "Are you sure you want to logout?", MessageBox.Avalonia.Enums.ButtonEnum.YesNo, MsBox.Avalonia.Enums.Icon.Question);
             var result = await box.ShowAsPopupAsync(this);
 
-            if (result == ButtonResult.Yes)
+            if (result == MsBox.Avalonia.Enums.ButtonResult.Yes)
             {
                 var loginWindow = new MainWindow();
                 loginWindow.Show();

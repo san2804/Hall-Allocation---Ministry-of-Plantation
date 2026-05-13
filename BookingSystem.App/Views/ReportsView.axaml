@@ -32,7 +32,7 @@
                         <TextBlock Text="To Date" FontSize="12" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,5"/>
                         <DatePicker />
                     </StackPanel>
-                    <Button Grid.Column="4" Content="Generate Report" Classes="Primary" Background="#1a5d38" Foreground="White" Padding="20,10" CornerRadius="6" VerticalAlignment="Bottom"/>
+                    <Button Grid.Column="4" Content="Generate Report" Classes="Primary" Padding="20,10" VerticalAlignment="Bottom"/>
                 </Grid>
             </Border>
 

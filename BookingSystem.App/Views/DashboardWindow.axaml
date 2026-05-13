@@ -137,7 +137,7 @@
                                 <TextBlock Text="NP" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="#666"/>
                             </Border>
                             <StackPanel VerticalAlignment="Center">
-                                <TextBlock Text="Nimal Perera" FontWeight="SemiBold" FontSize="14"/>
+                                <TextBlock Text="Nimal Perera" FontWeight="SemiBold" FontSize="14" Foreground="#1A1A1A"/>
                                 <TextBlock Text="Officer" FontSize="12" Foreground="#666"/>
                             </StackPanel>
                         </StackPanel>

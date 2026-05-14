@@ -61,8 +61,10 @@ namespace BookingSystem.App.Views
                         NavigateTo(new HelpView(), "Help & Support", btn);
                         break;
                     case "ManageUsersBtn":
+                        NavigateTo(new ManageUsersView(), "Manage Users", btn);
+                        break;
                     case "SystemSettingsBtn":
-                        // Placeholders for Admin specific views not yet implemented
+                        NavigateTo(new SystemSettingsView(), "System Settings", btn);
                         break;
                 }
             }

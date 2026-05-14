@@ -1,0 +1,156 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
+             x:Class="BookingSystem.App.Views.SystemSettingsView">
+
+    <UserControl.Styles>
+        <Style Selector="TextBlock.SectionHeader">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#1a5d38"/>
+            <Setter Property="Margin" Value="0,0,0,20"/>
+        </Style>
+        <Style Selector="TextBlock.FieldLabel">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+        </Style>
+        <Style Selector="TextBox">
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="Foreground" Value="#333333"/>
+            <Setter Property="Background" Value="White"/>
+        </Style>
+        <Style Selector="ToggleSwitch">
+            <Setter Property="OnContent" Value="Enabled"/>
+            <Setter Property="OffContent" Value="Disabled"/>
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer Padding="30">
+        <StackPanel Spacing="30">
+            <!-- Header -->
+            <Border Background="White" CornerRadius="12" Padding="25" BoxShadow="0 2 5 0 #0A000000">
+                <Grid ColumnDefinitions="*, Auto">
+                    <StackPanel Grid.Column="0" Spacing="5">
+                        <TextBlock Text="System Settings" FontSize="22" FontWeight="Bold" Foreground="#1A1A1A"/>
+                        <TextBlock Text="Configure global application rules and preferences." Foreground="#666" FontSize="14"/>
+                    </StackPanel>
+                    <Button Grid.Column="1" Content="Save All Changes" Classes="Primary" Padding="25,12" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+            <Grid ColumnDefinitions="*, 30, *">
+                <!-- Left Column: General & Booking Rules -->
+                <StackPanel Grid.Column="0" Spacing="30">
+                    <!-- Organization Info -->
+                    <Border Background="White" CornerRadius="12" Padding="30" BoxShadow="0 4 12 0 #0D000000">
+                        <StackPanel>
+                            <TextBlock Text="Organization Information" Classes="SectionHeader"/>
+                            
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock Text="Organization Name" Classes="FieldLabel"/>
+                                <TextBox Text="Ministry of Plantation"/>
+                            </StackPanel>
+
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock Text="System Email" Classes="FieldLabel"/>
+                                <TextBox Text="noreply@plantation.gov.lk"/>
+                            </StackPanel>
+
+                            <StackPanel>
+                                <TextBlock Text="Support Contact" Classes="FieldLabel"/>
+                                <TextBox Text="+94 11 234 5678"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Booking Rules -->
+                    <Border Background="White" CornerRadius="12" Padding="30" BoxShadow="0 4 12 0 #0D000000">
+                        <StackPanel>
+                            <TextBlock Text="Booking Rules" Classes="SectionHeader"/>
+                            
+                            <Grid ColumnDefinitions="*, 20, *">
+                                <StackPanel Grid.Column="0" Margin="0,0,0,20">
+                                    <TextBlock Text="Min. Advance Notice (Hrs)" Classes="FieldLabel"/>
+                                    <TextBox Text="24"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" Margin="0,0,0,20">
+                                    <TextBlock Text="Max. Booking Duration (Hrs)" Classes="FieldLabel"/>
+                                    <TextBox Text="8"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <StackPanel Orientation="Horizontal" Spacing="20" Margin="0,10,0,0">
+                                <TextBlock Text="Allow Weekend Bookings" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="#333"/>
+                                <ToggleSwitch IsChecked="False"/>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Spacing="20" Margin="0,10,0,0">
+                                <TextBlock Text="Auto-Approve Recurring" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="#333"/>
+                                <ToggleSwitch IsChecked="False"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- Right Column: Notifications & Data -->
+                <StackPanel Grid.Column="2" Spacing="30">
+                    <!-- Notifications -->
+                    <Border Background="White" CornerRadius="12" Padding="30" BoxShadow="0 4 12 0 #0D000000">
+                        <StackPanel>
+                            <TextBlock Text="Notifications" Classes="SectionHeader"/>
+                            
+                            <StackPanel Spacing="15">
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Email Notifications" FontWeight="SemiBold" Foreground="#333"/>
+                                        <TextBlock Text="Send email for request status changes." FontSize="12" Foreground="#666"/>
+                                    </StackPanel>
+                                    <ToggleSwitch Grid.Column="1" IsChecked="True"/>
+                                </Grid>
+
+                                <Separator Background="#F0F0F0"/>
+
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Admin Alerts" FontWeight="SemiBold" Foreground="#333"/>
+                                        <TextBlock Text="Notify admins for new pending requests." FontSize="12" Foreground="#666"/>
+                                    </StackPanel>
+                                    <ToggleSwitch Grid.Column="1" IsChecked="True"/>
+                                </Grid>
+
+                                <Separator Background="#F0F0F0"/>
+
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Reminder Alerts" FontWeight="SemiBold" Foreground="#333"/>
+                                        <TextBlock Text="Notify users 1 hour before booking starts." FontSize="12" Foreground="#666"/>
+                                    </StackPanel>
+                                    <ToggleSwitch Grid.Column="1" IsChecked="False"/>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- System Maintenance -->
+                    <Border Background="White" CornerRadius="12" Padding="30" BoxShadow="0 4 12 0 #0D000000">
+                        <StackPanel>
+                            <TextBlock Text="System Maintenance" Classes="SectionHeader" Foreground="#D93025"/>
+                            
+                            <StackPanel Spacing="15">
+                                <Button Content="Export System Logs" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="15"/>
+                                <Button Content="Clear Booking History" Background="#FCE8E8" Foreground="#D93025" BorderBrush="#D93025" BorderThickness="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="15"/>
+                                <Button Content="Reset System to Factory" Background="#D93025" Foreground="White" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" Padding="15" FontWeight="Bold"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

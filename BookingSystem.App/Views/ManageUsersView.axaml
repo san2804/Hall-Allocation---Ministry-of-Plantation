@@ -1,0 +1,97 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
+             x:Class="BookingSystem.App.Views.ManageUsersView">
+
+    <UserControl.Styles>
+        <Style Selector="Button.ActionBtn">
+            <Setter Property="Padding" Value="8"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="CornerRadius" Value="4"/>
+        </Style>
+    </UserControl.Styles>
+
+    <StackPanel Spacing="25" Margin="30">
+        <!-- Header -->
+        <Border Background="White" CornerRadius="12" Padding="25" BoxShadow="0 2 5 0 #0A000000">
+            <Grid ColumnDefinitions="*, Auto">
+                <StackPanel Grid.Column="0" Spacing="5">
+                    <TextBlock Text="Manage Users" FontSize="22" FontWeight="Bold" Foreground="#1A1A1A"/>
+                    <TextBlock Text="Add, edit, or remove staff and administrator accounts." Foreground="#666" FontSize="14"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="15" VerticalAlignment="Center">
+                    <TextBox Width="250" PlaceholderText="Search users..." Foreground="#333" PlaceholderForeground="#999"/>
+                    <Button Content="+ Add New User" Classes="Primary" Padding="20,10"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Users Table -->
+        <Border Background="White" CornerRadius="12" Padding="25" BoxShadow="0 4 12 0 #0D000000">
+            <StackPanel Spacing="20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/> <!-- Header -->
+                        <RowDefinition Height="Auto"/> <!-- Row 1 -->
+                        <RowDefinition Height="Auto"/> <!-- Row 2 -->
+                        <RowDefinition Height="Auto"/> <!-- Row 3 -->
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.5*"/> <!-- Name -->
+                        <ColumnDefinition Width="3*"/> <!-- Email -->
+                        <ColumnDefinition Width="1.5*"/> <!-- Role -->
+                        <ColumnDefinition Width="1.5*"/> <!-- Status -->
+                        <ColumnDefinition Width="Auto"/> <!-- Actions -->
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Headers -->
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Name" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Email" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Role" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
+                    <TextBlock Grid.Row="0" Grid.Column="3" Text="Status" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
+                    <TextBlock Grid.Row="0" Grid.Column="4" Text="Actions" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15" HorizontalAlignment="Center"/>
+
+                    <!-- User Row 1 -->
+                    <Border Grid.Row="1" Grid.ColumnSpan="5" BorderBrush="#F0F0F0" BorderThickness="0,0,0,1" Margin="0,0,0,15" Padding="0,0,0,15"/>
+                    <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                        <Border Width="32" Height="32" CornerRadius="16" Background="#E0E0E0">
+                            <TextBlock Text="NP" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#666"/>
+                        </Border>
+                        <TextBlock Text="Nimal Perera" VerticalAlignment="Center" FontWeight="Medium" Foreground="#333"/>
+                    </StackPanel>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="nimal.p@plantation.gov.lk" VerticalAlignment="Center" Foreground="#333"/>
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="Officer" VerticalAlignment="Center" Foreground="#333"/>
+                    <Border Grid.Row="1" Grid.Column="3" Background="#E6F4EA" CornerRadius="4" Padding="8,4" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock Text="Active" Foreground="#1E8E3E" FontSize="12" FontWeight="SemiBold"/>
+                    </Border>
+                    <StackPanel Grid.Row="1" Grid.Column="4" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                        <Button Classes="ActionBtn" Content="✏️"/>
+                        <Button Classes="ActionBtn" Content="🗑️"/>
+                    </StackPanel>
+
+                    <!-- User Row 2 -->
+                    <Border Grid.Row="2" Grid.ColumnSpan="5" BorderBrush="#F0F0F0" BorderThickness="0,0,0,1" Margin="0,0,0,15" Padding="0,0,0,15"/>
+                    <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                        <Border Width="32" Height="32" CornerRadius="16" Background="#1a5d38">
+                            <TextBlock Text="SJ" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="White"/>
+                        </Border>
+                        <TextBlock Text="Suneth Jayawardena" VerticalAlignment="Center" FontWeight="Medium" Foreground="#333"/>
+                    </StackPanel>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="suneth.j@plantation.gov.lk" VerticalAlignment="Center" Foreground="#333"/>
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="Admin" VerticalAlignment="Center" Foreground="#333"/>
+                    <Border Grid.Row="2" Grid.Column="3" Background="#E6F4EA" CornerRadius="4" Padding="8,4" HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <TextBlock Text="Active" Foreground="#1E8E3E" FontSize="12" FontWeight="SemiBold"/>
+                    </Border>
+                    <StackPanel Grid.Row="2" Grid.Column="4" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                        <Button Classes="ActionBtn" Content="✏️"/>
+                        <Button Classes="ActionBtn" Content="🗑️"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

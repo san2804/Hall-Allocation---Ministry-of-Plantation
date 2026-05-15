@@ -83,7 +83,7 @@ namespace BookingSystem.App.Views
             }
         }
 
-        private void NavigateTo(UserControl view, string title, Button activeBtn)
+        public void NavigateTo(UserControl view, string title, Button activeBtn)
         {
             MainContent.Content = view;
             PageTitle.Text = title;

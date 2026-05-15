@@ -1,36 +1,40 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using BookingSystem.App.Services;
 
 namespace BookingSystem.App.Views
 {
     public partial class MainWindow : Window
     {
+        private readonly ApiService _apiService;
+
         public MainWindow()
         {
             InitializeComponent();
+            _apiService = new ApiService();
         }
 
-        private void LoginButton_Click(object? sender, RoutedEventArgs e)
+        private async void LoginButton_Click(object? sender, RoutedEventArgs e)
         {
-            string username = UsernameTextBox.Text ?? "";
+            string username = UsernameTextBox.Text?.Trim() ?? "";
             string password = PasswordTextBox.Text ?? "";
-            bool isAdmin = false;
 
-            if (username == "admin" && password == "admin1234")
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                isAdmin = true;
-            }
-            else if (username == "normal_user" && password == "normal1234")
-            {
-                isAdmin = false;
-            }
-            else
-            {
-                ErrorMessageTextBlock.Text = "Invalid username or password.";
+                ErrorMessageTextBlock.Text = "Please enter both username and password.";
                 return;
             }
 
-            var dashboard = new DashboardWindow(isAdmin);
+            ErrorMessageTextBlock.Text = "Logging in...";
+            var result = await _apiService.LoginAsync(username, password);
+
+            if (result == null || !result.Success)
+            {
+                ErrorMessageTextBlock.Text = result?.Message ?? "Invalid username or password.";
+                return;
+            }
+
+            var dashboard = new DashboardWindow(result.IsAdmin);
             dashboard.Show();
             this.Close();
         }

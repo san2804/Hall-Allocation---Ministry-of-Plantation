@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:services="clr-namespace:BookingSystem.App.Services"
              mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
              x:Class="BookingSystem.App.Views.HallDetailsView">
 
@@ -15,92 +16,50 @@
         <Style Selector="Border.AmenityBadge">
             <Setter Property="Background" Value="#F5F7F9"/>
             <Setter Property="CornerRadius" Value="6"/>
-            <Setter Property="Padding" Value="15,10"/>
-            <Setter Property="Margin" Value="0,0,10,10"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="Margin" Value="0,0,8,8"/>
             <Setter Property="BorderBrush" Value="#E0E0E0"/>
             <Setter Property="BorderThickness" Value="1"/>
         </Style>
     </UserControl.Styles>
 
-    <ScrollViewer>
-        <StackPanel Spacing="30" Margin="0,0,0,30">
-            <!-- Header -->
+    <ScrollViewer Padding="30">
+        <StackPanel Spacing="25">
+            <TextBlock Text="Conference Halls" FontSize="22" FontWeight="Bold" Foreground="#1A1A1A"/>
             
+            <ItemsControl x:Name="HallsItemsControl">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="services:HallResponse">
+                        <Border Background="White" CornerRadius="12" Padding="25" BoxShadow="0 4 12 0 #0D000000" Margin="0,0,0,25">
+                            <Grid ColumnDefinitions="300, *">
+                                <!-- Image Column -->
+                                <Border Grid.Column="0" CornerRadius="8" ClipToBounds="True" Margin="0,0,25,0" VerticalAlignment="Top">
+                                    <Image Source="avares://BookingSystem.App/Assets/login_bg.png" Height="200" Stretch="UniformToFill"/>
+                                </Border>
 
-            <!-- Main Content Card -->
-            <Border Background="White" CornerRadius="12" Padding="30" BoxShadow="0 4 12 0 #0D000000">
-                <Grid ColumnDefinitions="1.2*, 1*">
-                    <!-- Left: Images -->
-                    <StackPanel Grid.Column="0" Spacing="15" Margin="0,0,30,0">
-                        <Border CornerRadius="8" ClipToBounds="True">
-                            <Image Source="avares://BookingSystem.App/Assets/login_bg.png" Height="300" Stretch="UniformToFill"/>
-                        </Border>
-                        <!-- Thumbnail placeholders -->
-                        <UniformGrid Columns="3" Rows="1">
-                            <Border CornerRadius="6" ClipToBounds="True" Margin="0,0,10,0">
-                                <Image Source="avares://BookingSystem.App/Assets/login_bg.png" Height="80" Stretch="UniformToFill"/>
-                            </Border>
-                            <Border CornerRadius="6" ClipToBounds="True" Margin="0,0,10,0" Opacity="0.7">
-                                <Image Source="avares://BookingSystem.App/Assets/login_bg.png" Height="80" Stretch="UniformToFill"/>
-                            </Border>
-                            <Border CornerRadius="6" ClipToBounds="True" Opacity="0.7">
-                                <Image Source="avares://BookingSystem.App/Assets/login_bg.png" Height="80" Stretch="UniformToFill"/>
-                            </Border>
-                        </UniformGrid>
-                    </StackPanel>
+                                <!-- Info Column -->
+                                <StackPanel Grid.Column="1" Spacing="15">
+                                    <Grid ColumnDefinitions="*, Auto">
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="{Binding Name}" FontSize="24" FontWeight="Bold" Foreground="#1a5d38"/>
+                                            <TextBlock Text="{Binding Location}" FontSize="14" Foreground="#666"/>
+                                        </StackPanel>
+                                        <Button Grid.Column="1" Content="Check Availability" Classes="Primary" Padding="15,8"/>
+                                    </Grid>
 
-                    <!-- Right: Info -->
-                    <StackPanel Grid.Column="1" Spacing="20">
-                        <StackPanel>
-                            <TextBlock Text="Main Conference Hall" FontSize="26" FontWeight="Bold" Foreground="#1a5d38"/>
-                            <TextBlock Text="Ministry of Plantation, Ground Floor" FontSize="15" Foreground="#666" Margin="0,5,0,0"/>
-                        </StackPanel>
+                                    <Grid ColumnDefinitions="Auto, *" Margin="0,5">
+                                        <TextBlock Text="Capacity:" FontWeight="SemiBold" Foreground="#666" Margin="0,0,15,0"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding Capacity, StringFormat='\{0\} People'}" Foreground="#333"/>
+                                    </Grid>
 
-                        <TextBlock Text="The Main Conference Hall is the primary venue for all major ministry events, large departmental meetings, and international delegations. It features state-of-the-art acoustics and a modern executive layout." 
-                                   TextWrapping="Wrap" FontSize="14" Foreground="#444" LineHeight="22"/>
-
-                        <Separator Background="#F0F0F0" Margin="0,5"/>
-
-                        <StackPanel>
-                            <TextBlock Text="Specifications" Classes="SectionTitle"/>
-                            <Grid ColumnDefinitions="Auto, *" RowDefinitions="Auto, Auto, Auto" Margin="0,0,0,10">
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Capacity:" FontWeight="SemiBold" Foreground="#666" Margin="0,0,30,12"/>
-                                <TextBlock Grid.Row="0" Grid.Column="1" Text="50 Seated (Executive Layout)" Foreground="#333" FontWeight="Medium"/>
-
-                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Dimensions:" FontWeight="SemiBold" Foreground="#666" Margin="0,0,30,12"/>
-                                <TextBlock Grid.Row="1" Grid.Column="1" Text="40ft x 60ft" Foreground="#333" FontWeight="Medium"/>
-
-                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Availability:" FontWeight="SemiBold" Foreground="#666" Margin="0,0,30,0"/>
-                                <TextBlock Grid.Row="2" Grid.Column="1" Text="08:00 AM - 06:00 PM (Weekdays)" Foreground="#333" FontWeight="Medium"/>
+                                    <TextBlock Text="Facilities:" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,8"/>
+                                    <TextBlock Text="{Binding Facilities}" TextWrapping="Wrap" Foreground="#444" FontSize="14"/>
+                                </StackPanel>
                             </Grid>
-                        </StackPanel>
-
-                        <StackPanel>
-                            <TextBlock Text="Amenities &amp; Facilities" Classes="SectionTitle"/>
-                            <WrapPanel>
-                                <Border Classes="AmenityBadge">
-                                    <TextBlock Text="📶 High-Speed WiFi" Foreground="#333" FontWeight="Medium"/>
-                                </Border>
-                                <Border Classes="AmenityBadge">
-                                    <TextBlock Text="📽️ 4K Projector &amp; Screen" Foreground="#333" FontWeight="Medium"/>
-                                </Border>
-                                <Border Classes="AmenityBadge">
-                                    <TextBlock Text="🔊 Surround Sound System" Foreground="#333" FontWeight="Medium"/>
-                                </Border>
-                                <Border Classes="AmenityBadge">
-                                    <TextBlock Text="❄️ Central Air Conditioning" Foreground="#333" FontWeight="Medium"/>
-                                </Border>
-                                <Border Classes="AmenityBadge">
-                                    <TextBlock Text="📝 Smart Whiteboard" Foreground="#333" FontWeight="Medium"/>
-                                </Border>
-                                <Border Classes="AmenityBadge">
-                                    <TextBlock Text="🎤 Dedicated Microphones" Foreground="#333" FontWeight="Medium"/>
-                                </Border>
-                            </WrapPanel>
-                        </StackPanel>
-                    </StackPanel>
-                </Grid>
-            </Border>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

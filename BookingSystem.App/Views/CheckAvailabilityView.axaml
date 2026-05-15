@@ -2,9 +2,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:BookingSystem.App.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="700"
              x:Class="BookingSystem.App.Views.CheckAvailabilityView"
+             x:DataType="vm:CheckAvailabilityViewModel"
+             xmlns:conv="clr-namespace:BookingSystem.App.Converters"
              Background="Transparent">
+
+    <UserControl.Resources>
+        <conv:StatusToPendingConverter x:Key="StatusToPendingConverter"/>
+    </UserControl.Resources>
 
     <UserControl.Styles>
         <Style Selector="Border.CalendarHeader">
@@ -64,17 +71,26 @@
             <Grid ColumnDefinitions="Auto, Auto, *, Auto">
                 <StackPanel Grid.Column="0" Spacing="8">
                     <TextBlock Text="Conference Hall" FontWeight="SemiBold" FontSize="14" Foreground="#333"/>
-                    <Border Background="#F8F9FA" Padding="15,10" CornerRadius="6" BorderBrush="#E0E0E0" BorderThickness="1" Width="250">
-                        <TextBlock Text="Main Conference Hall" VerticalAlignment="Center" FontWeight="Medium" Foreground="#333"/>
-                    </Border>
+                    <ComboBox ItemsSource="{Binding Halls}" 
+                              SelectedItem="{Binding SelectedHall}"
+                              Width="250"
+                              Background="#F8F9FA" 
+                              BorderBrush="#E0E0E0" 
+                              BorderThickness="1">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </StackPanel>
 
-                <Button Grid.Column="1" Content="Today" Margin="20,25,0,0" Background="#F0F0F0" Foreground="#333" Padding="15,8" FontWeight="Medium"/>
+                <Button Grid.Column="1" Content="Today" Command="{Binding TodayCommand}" Margin="20,25,0,0" Background="#F0F0F0" Foreground="#333" Padding="15,8" FontWeight="Medium"/>
 
                 <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Bottom" Spacing="15">
-                    <Button Content="‹" FontSize="20" Background="Transparent" Padding="10,0" Foreground="#333"/>
-                    <TextBlock Text="May 2024" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="#1A1A1A"/>
-                    <Button Content="›" FontSize="20" Background="Transparent" Padding="10,0" Foreground="#333"/>
+                    <Button Content="‹" Command="{Binding PreviousMonthCommand}" FontSize="20" Background="Transparent" Padding="10,0" Foreground="#333"/>
+                    <TextBlock Text="{Binding MonthYearText}" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="#1A1A1A" Width="150" TextAlignment="Center"/>
+                    <Button Content="›" Command="{Binding NextMonthCommand}" FontSize="20" Background="Transparent" Padding="10,0" Foreground="#333"/>
                 </StackPanel>
             </Grid>
         </Border>
@@ -94,64 +110,42 @@
                 </UniformGrid>
 
                 <!-- Calendar Grid -->
-                <UniformGrid Columns="7">
-                    <!-- Week 1 -->
-                    <Border Classes="CalendarDay" Opacity="0.5"><TextBlock Text="28" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay" Opacity="0.5"><TextBlock Text="29" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay" Opacity="0.5"><TextBlock Text="30" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="1" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="2" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="3" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="4" Classes="DayNumber"/></Border>
-
-                    <!-- Week 2 -->
-                    <Border Classes="CalendarDay"><TextBlock Text="5" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="6" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="7" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="8" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="9" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="10" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="11" Classes="DayNumber"/></Border>
-
-                    <!-- Week 3 -->
-                    <Border Classes="CalendarDay"><TextBlock Text="12" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay">
-                        <StackPanel>
-                            <TextBlock Text="13" Classes="DayNumber"/>
-                            <Border Classes="BookingTag" Background="#E6F4EA">
-                                <TextBlock Text="10:00 AM - Staff Meeting" Classes="BookingTagText" Foreground="#1E8E3E"/>
+                <ItemsControl ItemsSource="{Binding Days}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="7"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="vm:CalendarDayViewModel">
+                            <Border Classes="CalendarDay" Opacity="{Binding Opacity}">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding DayNumber}" Classes="DayNumber"/>
+                                        <ItemsControl ItemsSource="{Binding Bookings}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Classes="BookingTag" Background="{Binding $parent[Border;1].((vm:CalendarDayViewModel)DataContext).StatusColor}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Purpose}" 
+                                                                 Classes="BookingTagText" 
+                                                                 Foreground="{Binding $parent[Border;1].((vm:CalendarDayViewModel)DataContext).TextColor}"
+                                                                 TextWrapping="NoWrap"
+                                                                 TextTrimming="CharacterEllipsis"/>
+                                                        <TextBlock Text=" (P)" 
+                                                                 FontSize="10"
+                                                                 VerticalAlignment="Center"
+                                                                 IsVisible="{Binding Status, Converter={StaticResource StatusToPendingConverter}}"
+                                                                 Foreground="{Binding $parent[Border;1].((vm:CalendarDayViewModel)DataContext).TextColor}"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
                             </Border>
-                        </StackPanel>
-                    </Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="14" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="15" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="16" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="17" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="18" Classes="DayNumber"/></Border>
-
-                    <!-- Week 4 -->
-                    <Border Classes="CalendarDay"><TextBlock Text="19" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="20" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="21" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay">
-                        <StackPanel>
-                            <TextBlock Text="22" Classes="DayNumber"/>
-                            <Border Classes="BookingTag" Background="#FFF7E6">
-                                <TextBlock Text="09:00 AM - Monthly Review" Classes="BookingTagText" Foreground="#FA8C16"/>
-                            </Border>
-                        </StackPanel>
-                    </Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="23" Classes="DayNumber"/></Border>
-                    <Border Classes="CalendarDay">
-                        <StackPanel>
-                            <TextBlock Text="24" Classes="DayNumber"/>
-                            <Border Classes="BookingTag" Background="#FCE8E8">
-                                <TextBlock Text="08:00 AM - Private Event" Classes="BookingTagText" Foreground="#D93025"/>
-                            </Border>
-                        </StackPanel>
-                    </Border>
-                    <Border Classes="CalendarDay"><TextBlock Text="25" Classes="DayNumber"/></Border>
-                </UniformGrid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
         </Border>
 

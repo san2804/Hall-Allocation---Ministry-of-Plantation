@@ -2,8 +2,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:BookingSystem.App.ViewModels"
+             xmlns:svc="clr-namespace:BookingSystem.App.Services"
              mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
-             x:Class="BookingSystem.App.Views.DashboardOverviewView">
+             x:Class="BookingSystem.App.Views.DashboardOverviewView"
+             x:DataType="vm:DashboardOverviewViewModel"
+             xmlns:conv="clr-namespace:BookingSystem.App.Converters">
+
+    <UserControl.Resources>
+        <conv:StatusToTextConverter x:Key="StatusToTextConverter"/>
+    </UserControl.Resources>
 
     <UserControl.Styles>
         <Style Selector="Button.QuickAction">
@@ -30,25 +38,25 @@
                 <Border Classes="StatCard" Margin="0,0,15,0">
                     <StackPanel>
                         <TextBlock Text="Total Bookings" Foreground="#666" FontSize="13" FontWeight="SemiBold"/>
-                        <TextBlock Text="24" FontSize="28" FontWeight="Bold" Margin="0,5,0,0" Foreground="#1A1A1A"/>
+                        <TextBlock Text="{Binding TotalBookings}" FontSize="28" FontWeight="Bold" Margin="0,5,0,0" Foreground="#1A1A1A"/>
                     </StackPanel>
                 </Border>
                 <Border Classes="StatCard" Margin="0,0,15,0">
                     <StackPanel>
                         <TextBlock Text="Upcoming Bookings" Foreground="#666" FontSize="13" FontWeight="SemiBold"/>
-                        <TextBlock Text="5" FontSize="28" FontWeight="Bold" Margin="0,5,0,0" Foreground="#1A1A1A"/>
+                        <TextBlock Text="{Binding UpcomingBookingsCount}" FontSize="28" FontWeight="Bold" Margin="0,5,0,0" Foreground="#1A1A1A"/>
                     </StackPanel>
                 </Border>
                 <Border Classes="StatCard" Margin="0,0,15,0">
                     <StackPanel>
                         <TextBlock Text="Pending Approvals" Foreground="#666" FontSize="13" FontWeight="SemiBold"/>
-                        <TextBlock Text="3" FontSize="28" FontWeight="Bold" Margin="0,5,0,0" Foreground="#1A1A1A"/>
+                        <TextBlock Text="{Binding PendingApprovals}" FontSize="28" FontWeight="Bold" Margin="0,5,0,0" Foreground="#1A1A1A"/>
                     </StackPanel>
                 </Border>
                 <Border Classes="StatCard">
                     <StackPanel>
                         <TextBlock Text="This Month" Foreground="#666" FontSize="13" FontWeight="SemiBold"/>
-                        <TextBlock Text="7" FontSize="28" FontWeight="Bold" Margin="0,5,0,0" Foreground="#1A1A1A"/>
+                        <TextBlock Text="{Binding ThisMonthBookings}" FontSize="28" FontWeight="Bold" Margin="0,5,0,0" Foreground="#1A1A1A"/>
                     </StackPanel>
                 </Border>
             </UniformGrid>
@@ -63,27 +71,76 @@
                         </Grid>
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/><ColumnDefinition Width="3*"/><ColumnDefinition Width="3*"/><ColumnDefinition Width="2*"/><ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
+                            
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="Date" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
                             <TextBlock Grid.Row="0" Grid.Column="1" Text="Hall" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
                             <TextBlock Grid.Row="0" Grid.Column="2" Text="Time" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
                             <TextBlock Grid.Row="0" Grid.Column="3" Text="Purpose" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
                             <TextBlock Grid.Row="0" Grid.Column="4" Text="Status" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
-                            <Border Grid.Row="1" Grid.ColumnSpan="5" BorderBrush="#EEEEEE" BorderThickness="0,0,0,1" Margin="0,0,0,10" Padding="0,0,0,10"/>
                             
-                            <!-- Row 1 -->
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="22 May 2024" VerticalAlignment="Center" Margin="0,5"/>
-                            <TextBlock Grid.Row="2" Grid.Column="1" Text="Main Conference Hall" VerticalAlignment="Center" Margin="0,5"/>
-                            <TextBlock Grid.Row="2" Grid.Column="2" Text="09:00 AM - 11:00 AM" VerticalAlignment="Center" Margin="0,5"/>
-                            <TextBlock Grid.Row="2" Grid.Column="3" Text="Staff Meeting" VerticalAlignment="Center" Margin="0,5"/>
-                            <Border Grid.Row="2" Grid.Column="4" Classes="BadgeApproved" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,5">
-                                <TextBlock Text="Approved" Classes="BadgeApprovedText"/>
-                            </Border>
+                            <Border Grid.Row="1" Grid.ColumnSpan="5" BorderBrush="#EEEEEE" BorderThickness="0,0,0,1" Margin="0,0,0,10" Padding="0,0,0,10"/>
                         </Grid>
+
+                        <ItemsControl ItemsSource="{Binding UpcomingBookings}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="svc:BookingResponse">
+                                    <Grid ColumnDefinitions="2*, 3*, 3*, 2*, Auto" Margin="0,5">
+                                        <TextBlock Grid.Column="0" Text="{Binding StartTime, StringFormat=\{0:dd MMM yyyy\}}" VerticalAlignment="Center" Foreground="#333"/>
+                                        <TextBlock Grid.Column="1" Text="{Binding HallName}" VerticalAlignment="Center" Foreground="#333"/>
+                                        <TextBlock Grid.Column="2" VerticalAlignment="Center" Foreground="#333">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0:hh:mm tt} - {1:hh:mm tt}">
+                                                    <Binding Path="StartTime"/>
+                                                    <Binding Path="EndTime"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <TextBlock Grid.Column="3" Text="{Binding Purpose}" VerticalAlignment="Center" Foreground="#333"/>
+                                        <Border Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                            <Border.Styles>
+                                                <Style Selector="Border">
+                                                    <Setter Property="Background" Value="#FFF7E6"/>
+                                                    <Setter Property="CornerRadius" Value="4"/>
+                                                    <Setter Property="Padding" Value="8,4"/>
+                                                </Style>
+                                                <Style Selector="Border[Tag=1]">
+                                                    <Setter Property="Background" Value="#E6F4EA"/>
+                                                </Style>
+                                            </Border.Styles>
+                                            <Border.Tag>
+                                                <Binding Path="Status"/>
+                                            </Border.Tag>
+                                            <TextBlock Text="{Binding Status, Converter={StaticResource StatusToTextConverter}}" 
+                                                     FontSize="12" FontWeight="SemiBold">
+                                                <TextBlock.Styles>
+                                                    <Style Selector="TextBlock">
+                                                        <Setter Property="Foreground" Value="#FA8C16"/>
+                                                    </Style>
+                                                    <Style Selector="TextBlock[Tag=1]">
+                                                        <Setter Property="Foreground" Value="#1E8E3E"/>
+                                                    </Style>
+                                                </TextBlock.Styles>
+                                                <TextBlock.Tag>
+                                                    <Binding Path="Status"/>
+                                                </TextBlock.Tag>
+                                            </TextBlock>
+                                        </Border>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Text="No upcoming bookings found." 
+                                 HorizontalAlignment="Center" 
+                                 Margin="0,20" 
+                                 Foreground="#999"
+                                 IsVisible="{Binding !UpcomingBookings.Count}"/>
                     </StackPanel>
                 </Border>
 
@@ -92,10 +149,10 @@
                         <StackPanel>
                             <TextBlock Text="Quick Actions" FontSize="18" FontWeight="Bold" Foreground="#1A1A1A" Margin="0,0,0,15"/>
                             <UniformGrid Columns="2" Rows="2">
-                                <Button Classes="QuickAction" Content="Check Availability" Margin="0,0,10,10"/>
-                                <Button Classes="QuickAction" Content="New Booking" Margin="0,0,0,10"/>
-                                <Button Classes="QuickAction" Content="My Bookings" Margin="0,0,10,0"/>
-                                <Button Classes="QuickAction" Content="View Halls"/>
+                                <Button Name="QuickAvailabilityBtn" Click="QuickAction_Click" Classes="QuickAction" Content="Check Availability" Margin="0,0,10,10"/>
+                                <Button Name="QuickNewBookingBtn" Click="QuickAction_Click" Classes="QuickAction" Content="New Booking" Margin="0,0,0,10"/>
+                                <Button Name="QuickMyBookingsBtn" Click="QuickAction_Click" Classes="QuickAction" Content="My Bookings" Margin="0,0,10,0"/>
+                                <Button Name="QuickHallsBtn" Click="QuickAction_Click" Classes="QuickAction" Content="View Halls"/>
                             </UniformGrid>
                         </StackPanel>
                     </Border>

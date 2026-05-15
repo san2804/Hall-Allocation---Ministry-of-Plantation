@@ -51,7 +51,7 @@
 
                     <StackPanel Spacing="8">
                         <TextBlock Text="Username" FontWeight="SemiBold" Foreground="#333333" FontSize="14" />
-                        <TextBox x:Name="UsernameTextBox" PlaceholderText="Enter your username (normal_user / admin)" />
+                        <TextBox x:Name="UsernameTextBox" PlaceholderText="Enter your username (officer / admin)" />
                     </StackPanel>
 
                     <StackPanel Spacing="8">

@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:services="clr-namespace:BookingSystem.App.Services"
              mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
              x:Class="BookingSystem.App.Views.MyBookingsView">
 
@@ -61,13 +62,6 @@
         <Border Background="White" CornerRadius="12" Padding="25" BoxShadow="0 4 12 0 #0D000000">
             <StackPanel Spacing="20">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/> <!-- Header -->
-                        <RowDefinition Height="Auto"/> <!-- Row 1 -->
-                        <RowDefinition Height="Auto"/> <!-- Row 2 -->
-                        <RowDefinition Height="Auto"/> <!-- Row 3 -->
-                        <RowDefinition Height="Auto"/> <!-- Row 4 -->
-                    </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/> <!-- ID -->
                         <ColumnDefinition Width="2*"/> <!-- Hall -->
@@ -86,79 +80,55 @@
                     <TextBlock Grid.Row="0" Grid.Column="4" Text="Purpose" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
                     <TextBlock Grid.Row="0" Grid.Column="5" Text="Status" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15" HorizontalAlignment="Center"/>
                     <TextBlock Grid.Row="0" Grid.Column="6" Text="Action" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15" HorizontalAlignment="Center"/>
-
-                    <!-- Row 1 -->
-                    <Border Grid.Row="1" Grid.ColumnSpan="7" BorderBrush="#F0F0F0" BorderThickness="0,0,0,1" Margin="0,0,0,15" Padding="0,0,0,15"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="#BK220501" VerticalAlignment="Center" FontWeight="Medium"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="Main Conference Hall" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="1" Grid.Column="2" Text="22 May 2024" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="1" Grid.Column="3" Text="09:00 AM - 11:00 AM" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="1" Grid.Column="4" Text="Staff Meeting" VerticalAlignment="Center"/>
-                    <Border Grid.Row="1" Grid.Column="5" Classes="BadgeApproved" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock Text="Approved" Classes="BadgeApprovedText"/>
-                    </Border>
-                    <StackPanel Grid.Row="1" Grid.Column="6" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
-                        <Button Classes="ActionBtn" Content="👁️" ToolTip.Tip="View Details"/>
-                        <Button Classes="ActionBtn" Content="❌" ToolTip.Tip="Cancel Booking"/>
-                    </StackPanel>
-
-                    <!-- Row 2 -->
-                    <Border Grid.Row="2" Grid.ColumnSpan="7" BorderBrush="#F0F0F0" BorderThickness="0,0,0,1" Margin="0,0,0,15" Padding="0,0,0,15"/>
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="#BK230502" VerticalAlignment="Center" FontWeight="Medium"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1" Text="Main Conference Hall" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="2" Grid.Column="2" Text="23 May 2024" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="2" Grid.Column="3" Text="10:00 AM - 12:00 PM" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="2" Grid.Column="4" Text="Training Session" VerticalAlignment="Center"/>
-                    <Border Grid.Row="2" Grid.Column="5" Classes="BadgePending" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock Text="Pending" Classes="BadgePendingText"/>
-                    </Border>
-                    <StackPanel Grid.Row="2" Grid.Column="6" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
-                        <Button Classes="ActionBtn" Content="👁️"/>
-                        <Button Classes="ActionBtn" Content="✏️"/>
-                        <Button Classes="ActionBtn" Content="❌"/>
-                    </StackPanel>
-
-                    <!-- Row 3 -->
-                    <Border Grid.Row="3" Grid.ColumnSpan="7" BorderBrush="#F0F0F0" BorderThickness="0,0,0,1" Margin="0,0,0,15" Padding="0,0,0,15"/>
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="#BK240503" VerticalAlignment="Center" FontWeight="Medium"/>
-                    <TextBlock Grid.Row="3" Grid.Column="1" Text="Main Conference Hall" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="3" Grid.Column="2" Text="24 May 2024" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="3" Grid.Column="3" Text="02:00 PM - 04:00 PM" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="3" Grid.Column="4" Text="Project Discussion" VerticalAlignment="Center"/>
-                    <Border Grid.Row="3" Grid.Column="5" Classes="BadgePending" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock Text="Pending" Classes="BadgePendingText"/>
-                    </Border>
-                    <StackPanel Grid.Row="3" Grid.Column="6" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
-                        <Button Classes="ActionBtn" Content="👁️"/>
-                        <Button Classes="ActionBtn" Content="✏️"/>
-                        <Button Classes="ActionBtn" Content="❌"/>
-                    </StackPanel>
-
-                    <!-- Row 4 -->
-                    <Border Grid.Row="4" Grid.ColumnSpan="7" BorderBrush="#F0F0F0" BorderThickness="0,0,0,1" Margin="0,0,0,15" Padding="0,0,0,15"/>
-                    <TextBlock Grid.Row="4" Grid.Column="0" Text="#BK250504" VerticalAlignment="Center" FontWeight="Medium"/>
-                    <TextBlock Grid.Row="4" Grid.Column="1" Text="Main Conference Hall" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="4" Grid.Column="2" Text="25 May 2024" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="4" Grid.Column="3" Text="01:00 PM - 05:00 PM" VerticalAlignment="Center"/>
-                    <TextBlock Grid.Row="4" Grid.Column="4" Text="Workshop" VerticalAlignment="Center"/>
-                    <Border Grid.Row="4" Grid.Column="5" Classes="BadgeApproved" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <TextBlock Text="Approved" Classes="BadgeApprovedText"/>
-                    </Border>
-                    <StackPanel Grid.Row="4" Grid.Column="6" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
-                        <Button Classes="ActionBtn" Content="👁️"/>
-                        <Button Classes="ActionBtn" Content="❌"/>
-                    </StackPanel>
                 </Grid>
+
+                <ItemsControl x:Name="BookingsItemsControl">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="services:BookingResponse">
+                            <Grid Margin="0,0,0,15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="1.5*"/>
+                                </Grid.ColumnDefinitions>
+                                <Border Grid.ColumnSpan="7" BorderBrush="#F0F0F0" BorderThickness="0,0,0,1" VerticalAlignment="Bottom" Margin="0,0,0,-7"/>
+                                
+                                <TextBlock Grid.Column="0" Text="{Binding Id, StringFormat='#BK\{0\}'}" VerticalAlignment="Center" FontWeight="Medium"/>
+                                <TextBlock Grid.Column="1" Text="{Binding HallName}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="2" Text="{Binding StartTime, StringFormat='\{0:dd MMM yyyy\}'}" VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="3" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding StartTime, StringFormat='\{0:hh:mm tt\}'}"/>
+                                    <TextBlock Text="{Binding EndTime, StringFormat='\{0:hh:mm tt\}'}" FontSize="11" Foreground="#666"/>
+                                </StackPanel>
+                                <TextBlock Grid.Column="4" Text="{Binding Purpose}" VerticalAlignment="Center"/>
+                                
+                                <Border Grid.Column="5" Padding="8,4" CornerRadius="4" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <Border.Styles>
+                                        <Style Selector="Border">
+                                            <Setter Property="Background" Value="#F0F0F0"/>
+                                        </Style>
+                                    </Border.Styles>
+                                    <TextBlock Text="Status" FontSize="11" FontWeight="Bold"/>
+                                </Border>
+
+                                <StackPanel Grid.Column="6" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                                    <Button Classes="ActionBtn" Content="👁️"/>
+                                    <Button Classes="ActionBtn" Content="❌"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
 
                 <!-- Pagination -->
                 <Grid ColumnDefinitions="Auto, *, Auto">
-                    <TextBlock Grid.Column="0" Text="Showing 1 to 4 of 24 entries" Foreground="#666" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="ShowingText" Grid.Column="0" Text="Showing 0 entries" Foreground="#666" VerticalAlignment="Center"/>
                     <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5">
-                        <Button Content="Previous" Background="#F0F0F0" Padding="12,6"/>
                         <Button Content="1" Background="#1a5d38" Foreground="White" Padding="12,6"/>
-                        <Button Content="2" Background="Transparent" Padding="12,6"/>
-                        <Button Content="3" Background="Transparent" Padding="12,6"/>
-                        <Button Content="Next" Background="#F0F0F0" Padding="12,6"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>

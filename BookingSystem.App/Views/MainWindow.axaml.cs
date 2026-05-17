@@ -34,7 +34,7 @@ namespace BookingSystem.App.Views
                 return;
             }
 
-            var dashboard = new DashboardWindow(result.IsAdmin);
+            var dashboard = new DashboardWindow(result.IsAdmin, result.FullName, result.Role);
             dashboard.Show();
             this.Close();
         }

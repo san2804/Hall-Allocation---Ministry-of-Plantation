@@ -1,0 +1,24 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="BookingSystem.App.Views.AlertWindow"
+        Title="Alert" Width="400" Height="180"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False"
+        SystemDecorations="Full"
+        Topmost="True"
+        Background="White">
+    
+    <Grid RowDefinitions="*, Auto">
+        <StackPanel Grid.Row="0" Margin="25" Spacing="10">
+            <TextBlock Name="TitleText" FontSize="18" FontWeight="Bold" Foreground="#1a5d38"/>
+            <TextBlock Name="MessageText" FontSize="14" TextWrapping="Wrap" Foreground="#333"/>
+        </StackPanel>
+        
+        <Border Grid.Row="1" Background="#F8F9FA" Padding="15">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+                <Button Name="NoBtn" Content="No" Width="80" IsVisible="False" Click="No_Click"/>
+                <Button Name="OkBtn" Content="OK" Width="80" Background="#1a5d38" Foreground="White" Click="Ok_Click"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

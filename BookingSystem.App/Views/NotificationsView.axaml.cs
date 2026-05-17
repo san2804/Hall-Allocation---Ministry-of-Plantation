@@ -7,6 +7,9 @@ namespace BookingSystem.App.Views
         public NotificationsView()
         {
             InitializeComponent();
+            var viewModel = new ViewModels.NotificationsViewModel();
+            this.DataContext = viewModel;
+            _ = viewModel.LoadNotificationsCommand.ExecuteAsync(null);
         }
     }
 }

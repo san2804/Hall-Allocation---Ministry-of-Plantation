@@ -79,10 +79,12 @@ namespace BookingSystem.App.Views
             var startDateTime = date.Date + start;
             var endDateTime = date.Date + end;
 
+            // Get Parent Window for safe display
+            var parentWindow = TopLevel.GetTopLevel(this) as Window;
+
             if (endDateTime <= startDateTime)
             {
-                var box = MessageBoxManager.GetMessageBoxStandard("Error", "End time must be after start time.", MessageBox.Avalonia.Enums.ButtonEnum.Ok);
-                await box.ShowAsPopupAsync(this.VisualRoot as Window);
+                await Services.AlertService.ShowAlert("Error", "End time must be after start time.", parentWindow);
                 return;
             }
 
@@ -99,13 +101,9 @@ namespace BookingSystem.App.Views
             {
                 var success = await _apiService.CreateBookingAsync(request);
                 
-                var window = this.VisualRoot as Window;
-                if (window == null) return;
-
                 if (success)
                 {
-                    var box = MessageBoxManager.GetMessageBoxStandard("Success", "Booking request submitted successfully!", MessageBox.Avalonia.Enums.ButtonEnum.Ok);
-                    await box.ShowAsPopupAsync(window);
+                    await Services.AlertService.ShowAlert("Success", "Booking request submitted successfully! It is now awaiting admin approval.", parentWindow);
                     
                     // Clear form
                     if (purposeBox != null) purposeBox.Text = "";
@@ -113,18 +111,12 @@ namespace BookingSystem.App.Views
                 }
                 else
                 {
-                    var box = MessageBoxManager.GetMessageBoxStandard("Error", "Failed to submit booking. There might be a conflict.", MessageBox.Avalonia.Enums.ButtonEnum.Ok);
-                    await box.ShowAsPopupAsync(window);
+                    await Services.AlertService.ShowAlert("Error", "Failed to submit booking. There might be a schedule conflict.", parentWindow);
                 }
             }
             catch (Exception ex)
             {
-                var window = this.VisualRoot as Window;
-                if (window != null)
-                {
-                    var box = MessageBoxManager.GetMessageBoxStandard("Error", $"An unexpected error occurred: {ex.Message}", MessageBox.Avalonia.Enums.ButtonEnum.Ok);
-                    await box.ShowAsPopupAsync(window);
-                }
+                await Services.AlertService.ShowAlert("System Error", $"Could not submit booking: {ex.Message}", parentWindow);
             }
         }
     }

@@ -2,9 +2,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:BookingSystem.App.ViewModels"
              xmlns:services="clr-namespace:BookingSystem.App.Services"
+             xmlns:conv="clr-namespace:BookingSystem.App.Converters"
              mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
-             x:Class="BookingSystem.App.Views.MyBookingsView">
+             x:Class="BookingSystem.App.Views.MyBookingsView"
+             x:DataType="vm:MyBookingsViewModel">
+
+    <UserControl.Resources>
+        <conv:StatusToTextConverter x:Key="StatusToTextConverter"/>
+        <conv:EqualityConverter x:Key="EqualityConverter"/>
+    </UserControl.Resources>
 
     <UserControl.Styles>
         <!-- Tab Button Style -->
@@ -49,11 +57,11 @@
                 </Grid>
 
                 <StackPanel Orientation="Horizontal" Spacing="5">
-                    <Button Classes="TabBtn Active" Content="All"/>
-                    <Button Classes="TabBtn" Content="Pending"/>
-                    <Button Classes="TabBtn" Content="Approved"/>
-                    <Button Classes="TabBtn" Content="Rejected"/>
-                    <Button Classes="TabBtn" Content="Cancelled"/>
+                    <Button Classes="TabBtn" Classes.Active="{Binding SelectedStatusFilter, Converter={StaticResource EqualityConverter}, ConverterParameter={x:Null}}" Content="All" Command="{Binding SetFilterCommand}" CommandParameter="{x:Null}"/>
+                    <Button Classes="TabBtn" Classes.Active="{Binding SelectedStatusFilter, Converter={StaticResource EqualityConverter}, ConverterParameter=0}" Content="Pending" Command="{Binding SetFilterCommand}" CommandParameter="0"/>
+                    <Button Classes="TabBtn" Classes.Active="{Binding SelectedStatusFilter, Converter={StaticResource EqualityConverter}, ConverterParameter=1}" Content="Approved" Command="{Binding SetFilterCommand}" CommandParameter="1"/>
+                    <Button Classes="TabBtn" Classes.Active="{Binding SelectedStatusFilter, Converter={StaticResource EqualityConverter}, ConverterParameter=2}" Content="Rejected" Command="{Binding SetFilterCommand}" CommandParameter="2"/>
+                    <Button Classes="TabBtn" Classes.Active="{Binding SelectedStatusFilter, Converter={StaticResource EqualityConverter}, ConverterParameter=3}" Content="Cancelled" Command="{Binding SetFilterCommand}" CommandParameter="3"/>
                 </StackPanel>
             </StackPanel>
         </Border>
@@ -64,25 +72,25 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/> <!-- ID -->
+                        <ColumnDefinition Width="2*"/> <!-- User (Admin only) -->
                         <ColumnDefinition Width="2*"/> <!-- Hall -->
                         <ColumnDefinition Width="2*"/> <!-- Date -->
                         <ColumnDefinition Width="2*"/> <!-- Time -->
-                        <ColumnDefinition Width="2*"/> <!-- Purpose -->
                         <ColumnDefinition Width="Auto"/> <!-- Status -->
                         <ColumnDefinition Width="1.5*"/> <!-- Action -->
                     </Grid.ColumnDefinitions>
 
                     <!-- Headers -->
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="ID" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Hall" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
-                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Date" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
-                    <TextBlock Grid.Row="0" Grid.Column="3" Text="Time" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
-                    <TextBlock Grid.Row="0" Grid.Column="4" Text="Purpose" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Requested By" IsVisible="{Binding IsAdminMode}" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="Hall" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
+                    <TextBlock Grid.Row="0" Grid.Column="3" Text="Date" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
+                    <TextBlock Grid.Row="0" Grid.Column="4" Text="Time" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15"/>
                     <TextBlock Grid.Row="0" Grid.Column="5" Text="Status" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15" HorizontalAlignment="Center"/>
                     <TextBlock Grid.Row="0" Grid.Column="6" Text="Action" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,15" HorizontalAlignment="Center"/>
                 </Grid>
 
-                <ItemsControl x:Name="BookingsItemsControl">
+                <ItemsControl ItemsSource="{Binding Bookings}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate x:DataType="services:BookingResponse">
                             <Grid Margin="0,0,0,15">
@@ -98,26 +106,56 @@
                                 <Border Grid.ColumnSpan="7" BorderBrush="#F0F0F0" BorderThickness="0,0,0,1" VerticalAlignment="Bottom" Margin="0,0,0,-7"/>
                                 
                                 <TextBlock Grid.Column="0" Text="{Binding Id, StringFormat='#BK\{0\}'}" VerticalAlignment="Center" FontWeight="Medium"/>
-                                <TextBlock Grid.Column="1" Text="{Binding HallName}" VerticalAlignment="Center"/>
-                                <TextBlock Grid.Column="2" Text="{Binding StartTime, StringFormat='\{0:dd MMM yyyy\}'}" VerticalAlignment="Center"/>
-                                <StackPanel Grid.Column="3" VerticalAlignment="Center">
+                                <TextBlock Grid.Column="1" Text="{Binding UserFullName}" IsVisible="{Binding $parent[UserControl].((vm:MyBookingsViewModel)DataContext).IsAdminMode}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="2" Text="{Binding HallName}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="3" Text="{Binding StartTime, StringFormat='\{0:dd MMM yyyy\}'}" VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="4" VerticalAlignment="Center">
                                     <TextBlock Text="{Binding StartTime, StringFormat='\{0:hh:mm tt\}'}"/>
                                     <TextBlock Text="{Binding EndTime, StringFormat='\{0:hh:mm tt\}'}" FontSize="11" Foreground="#666"/>
                                 </StackPanel>
-                                <TextBlock Grid.Column="4" Text="{Binding Purpose}" VerticalAlignment="Center"/>
                                 
                                 <Border Grid.Column="5" Padding="8,4" CornerRadius="4" VerticalAlignment="Center" HorizontalAlignment="Center">
                                     <Border.Styles>
                                         <Style Selector="Border">
-                                            <Setter Property="Background" Value="#F0F0F0"/>
+                                            <Setter Property="Background" Value="#FFF7E6"/>
+                                        </Style>
+                                        <Style Selector="Border[Tag=1]">
+                                            <Setter Property="Background" Value="#E6F4EA"/>
+                                        </Style>
+                                        <Style Selector="Border[Tag=2]">
+                                            <Setter Property="Background" Value="#FCE8E8"/>
+                                        </Style>
+                                        <Style Selector="Border[Tag=3]">
+                                            <Setter Property="Background" Value="#F5F5F5"/>
                                         </Style>
                                     </Border.Styles>
-                                    <TextBlock Text="Status" FontSize="11" FontWeight="Bold"/>
+                                    <Border.Tag>
+                                        <Binding Path="Status"/>
+                                    </Border.Tag>
+                                    <TextBlock Text="{Binding Status, Converter={StaticResource StatusToTextConverter}}" FontSize="11" FontWeight="Bold">
+                                        <TextBlock.Styles>
+                                            <Style Selector="TextBlock">
+                                                <Setter Property="Foreground" Value="#FA8C16"/>
+                                            </Style>
+                                            <Style Selector="TextBlock[Tag=1]">
+                                                <Setter Property="Foreground" Value="#1E8E3E"/>
+                                            </Style>
+                                            <Style Selector="TextBlock[Tag=2]">
+                                                <Setter Property="Foreground" Value="#D93025"/>
+                                            </Style>
+                                            <Style Selector="TextBlock[Tag=3]">
+                                                <Setter Property="Foreground" Value="#666666"/>
+                                            </Style>
+                                        </TextBlock.Styles>
+                                        <TextBlock.Tag>
+                                            <Binding Path="Status"/>
+                                        </TextBlock.Tag>
+                                    </TextBlock>
                                 </Border>
 
                                 <StackPanel Grid.Column="6" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
-                                    <Button Classes="ActionBtn" Content="👁️"/>
-                                    <Button Classes="ActionBtn" Content="❌"/>
+                                    <Button Classes="ActionBtn" Content="✅" ToolTip.Tip="Approve" IsVisible="{Binding $parent[UserControl].((vm:MyBookingsViewModel)DataContext).IsAdminMode}" Click="ActionBtn_Click"/>
+                                    <Button Classes="ActionBtn" Content="❌" ToolTip.Tip="Reject/Cancel" Click="ActionBtn_Click"/>
                                 </StackPanel>
                             </Grid>
                         </DataTemplate>
@@ -126,7 +164,7 @@
 
                 <!-- Pagination -->
                 <Grid ColumnDefinitions="Auto, *, Auto">
-                    <TextBlock x:Name="ShowingText" Grid.Column="0" Text="Showing 0 entries" Foreground="#666" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding ShowingCountText}" Grid.Column="0" Foreground="#666" VerticalAlignment="Center"/>
                     <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="5">
                         <Button Content="1" Background="#1a5d38" Foreground="White" Padding="12,6"/>
                     </StackPanel>

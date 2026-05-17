@@ -40,6 +40,8 @@ public class AuthService : IAuthService
             Success = true,
             Token = token,
             IsAdmin = user.Role == "Admin",
+            FullName = user.FullName,
+            Role = user.Role,
             Message = "Login successful."
         };
     }

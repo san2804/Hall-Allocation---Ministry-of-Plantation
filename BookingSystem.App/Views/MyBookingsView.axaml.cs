@@ -7,36 +7,38 @@ namespace BookingSystem.App.Views
 {
     public partial class MyBookingsView : UserControl
     {
-        private readonly ApiService _apiService;
+        private ViewModels.MyBookingsViewModel? _viewModel;
 
-        public MyBookingsView()
+        public MyBookingsView() : this(false) { }
+
+        public MyBookingsView(bool isAdminMode)
         {
             InitializeComponent();
-            _apiService = new ApiService();
-            _ = LoadBookings();
+            _viewModel = new ViewModels.MyBookingsViewModel(isAdminMode);
+            this.DataContext = _viewModel;
+            _ = _viewModel.LoadBookingsCommand.ExecuteAsync(null);
         }
 
-        private async Task LoadBookings()
+        private async void ActionBtn_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            var bookings = await _apiService.GetMyBookingsAsync();
-            if (bookings != null)
+            if (sender is Button btn && btn.DataContext is BookingResponse booking)
             {
-                foreach (var b in bookings)
+                if (btn.Content?.ToString() == "✅") // Approve
                 {
-                    b.StartTime = b.StartTime.ToLocalTime();
-                    b.EndTime = b.EndTime.ToLocalTime();
+                    await _viewModel!.UpdateStatusCommand.ExecuteAsync(new ViewModels.BookingStatusUpdateArgs
+                    {
+                        BookingId = booking.Id,
+                        NewStatus = 1 // Approved
+                    });
                 }
-
-                var itemsControl = this.FindControl<ItemsControl>("BookingsItemsControl");
-                if (itemsControl != null)
+                else if (btn.Content?.ToString() == "❌") // Reject/Cancel
                 {
-                    itemsControl.ItemsSource = bookings;
-                }
-
-                var showingText = this.FindControl<TextBlock>("ShowingText");
-                if (showingText != null)
-                {
-                    showingText.Text = $"Showing {bookings.Count} entries";
+                    // For rejection, we could show a dialog for remarks, but for now let's just update
+                    await _viewModel!.UpdateStatusCommand.ExecuteAsync(new ViewModels.BookingStatusUpdateArgs
+                    {
+                        BookingId = booking.Id,
+                        NewStatus = _viewModel.IsAdminMode ? 2 : 3 // 2: Rejected (Admin), 3: Cancelled (User)
+                    });
                 }
             }
         }

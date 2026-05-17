@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using BookingSystem.App.Views;
+using System;
 using System.Linq;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
@@ -10,79 +11,105 @@ namespace BookingSystem.App.Views
 {
     public partial class DashboardWindow : Window
     {
-        public DashboardWindow() : this(false) { }
+        public DashboardWindow() : this(false, "User", "Role") { }
 
-        public DashboardWindow(bool isAdmin)
+        public DashboardWindow(bool isAdmin, string fullName, string role)
         {
             InitializeComponent();
-            this.DataContext = new ViewModels.DashboardWindowViewModel(isAdmin);
+            this.DataContext = new ViewModels.DashboardWindowViewModel(isAdmin, fullName, role);
             // Set initial view
             NavigateTo(new DashboardOverviewView(), "Dashboard", DashboardBtn);
         }
 
         private async void MenuBtn_Click(object? sender, RoutedEventArgs e)
         {
-            if (sender is Button btn)
+            if (sender is Button btn && btn.Name != null)
             {
-                if (btn.Content?.ToString() == "Logout")
-                {
-                    await HandleLogout();
-                    return;
-                }
-
                 switch (btn.Name)
                 {
-                    case "DashboardBtn":
-                        NavigateTo(new DashboardOverviewView(), "Dashboard", btn);
+                    case "LogoutBtn":
+                        await HandleLogout();
                         break;
-                    case "AvailabilityBtn":
-                        NavigateTo(new CheckAvailabilityView(), "Check Availability", btn);
-                        break;
-                    case "NewBookingBtn":
-                        NavigateTo(new NewBookingView(), "New Booking", btn);
-                        break;
-                    case "MyBookingsBtn":
-                    case "ManageBookingsBtn":
-                        NavigateTo(new MyBookingsView(), btn.Name == "ManageBookingsBtn" ? "Manage Bookings" : "My Bookings", btn);
-                        break;
-                    case "HallsBtn":
-                        NavigateTo(new HallDetailsView(), "Hall Details", btn);
-                        break;
-                    case "ProfileBtn":
-                        NavigateTo(new ProfileView(), "Profile", btn);
-                        break;
-                    case "NotificationsBtn":
-                        NavigateTo(new NotificationsView(), "Notifications", btn);
-                        break;
-                    case "ReportsBtn":
-                        NavigateTo(new ReportsView(), "Reports", btn);
-                        break;
-                    case "HelpBtn":
-                        NavigateTo(new HelpView(), "Help & Support", btn);
-                        break;
-                    case "ManageUsersBtn":
-                        NavigateTo(new ManageUsersView(), "Manage Users", btn);
-                        break;
-                    case "SystemSettingsBtn":
-                        NavigateTo(new SystemSettingsView(), "System Settings", btn);
+                    default:
+                        HandleNavigation(btn.Name, btn);
                         break;
                 }
+            }
+        }
+
+        private void HeaderBtn_Click(object? sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn)
+            {
+                switch (btn.Name)
+                {
+                    case "HeaderNotificationsBtn":
+                        HandleNavigation("NotificationsBtn", NotificationsBtn);
+                        break;
+                    case "HeaderProfileBtn":
+                        HandleNavigation("ProfileBtn", ProfileBtn);
+                        break;
+                }
+            }
+        }
+
+        private void HandleNavigation(string name, Button btn)
+        {
+            switch (name)
+            {
+                case "DashboardBtn":
+                    NavigateTo(new DashboardOverviewView(), "Dashboard", btn);
+                    break;
+                case "AvailabilityBtn":
+                    NavigateTo(new CheckAvailabilityView(), "Check Availability", btn);
+                    break;
+                case "NewBookingBtn":
+                    NavigateTo(new NewBookingView(), "New Booking", btn);
+                    break;
+                case "MyBookingsBtn":
+                case "ManageBookingsBtn":
+                    NavigateTo(new MyBookingsView(name == "ManageBookingsBtn"), name == "ManageBookingsBtn" ? "Manage Bookings" : "My Bookings", btn);
+                    break;
+                case "HallsBtn":
+                    NavigateTo(new HallDetailsView(), "Hall Details", btn);
+                    break;
+                case "ProfileBtn":
+                    NavigateTo(new ProfileView(), "Profile", btn);
+                    break;
+                case "NotificationsBtn":
+                    NavigateTo(new NotificationsView(), "Notifications", btn);
+                    break;
+                case "ReportsBtn":
+                    NavigateTo(new ReportsView(), "Reports", btn);
+                    break;
+                case "HelpBtn":
+                    NavigateTo(new HelpView(), "Help & Support", btn);
+                    break;
+                case "ManageUsersBtn":
+                    NavigateTo(new ManageUsersView(), "Manage Users", btn);
+                    break;
+                case "SystemSettingsBtn":
+                    NavigateTo(new SystemSettingsView(), "System Settings", btn);
+                    break;
             }
         }
 
         private async Task HandleLogout()
         {
-            var box = MessageBoxManager.GetMessageBoxStandard("Logout", "Are you sure you want to logout?", MessageBox.Avalonia.Enums.ButtonEnum.YesNo, MsBox.Avalonia.Enums.Icon.Question);
-            var result = await box.ShowAsPopupAsync(this);
-
-            if (result == MsBox.Avalonia.Enums.ButtonResult.Yes)
+            var confirm = await Services.AlertService.ShowConfirm("Logout", "Are you sure you want to logout?", this);
+            if (confirm)
             {
-                var loginWindow = new MainWindow();
-                loginWindow.Show();
-                this.Close();
+                PerformLogout();
             }
         }
 
+        private void PerformLogout()
+        {
+            new Services.ApiService().Logout();
+            var loginWindow = new MainWindow();
+            loginWindow.Show();
+            this.Close();
+        }
         public void NavigateTo(UserControl view, string title, Button activeBtn)
         {
             MainContent.Content = view;

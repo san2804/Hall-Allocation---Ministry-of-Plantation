@@ -110,9 +110,7 @@
                     <TextBlock x:Name="HallFacilitiesText" Grid.Row="2" Grid.Column="1" Text="-" TextWrapping="Wrap" Foreground="#333"/>
                 </Grid>
 
-                <Border Background="#E6F4EA" Padding="15" CornerRadius="8">
-                    <TextBlock Text="This hall is currently available for your selected time slot." Foreground="#1E8E3E" TextWrapping="Wrap" FontSize="13" FontWeight="Medium" HorizontalAlignment="Center"/>
-                </Border>
+                
             </StackPanel>
         </Border>
     </Grid>

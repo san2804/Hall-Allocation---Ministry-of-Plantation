@@ -99,9 +99,9 @@ namespace BookingSystem.App.Views
 
             try 
             {
-                var success = await _apiService.CreateBookingAsync(request);
+                var result = await _apiService.CreateBookingAsync(request);
                 
-                if (success)
+                if (result.Success)
                 {
                     await Services.AlertService.ShowAlert("Success", "Booking request submitted successfully! It is now awaiting admin approval.", parentWindow);
                     
@@ -111,7 +111,7 @@ namespace BookingSystem.App.Views
                 }
                 else
                 {
-                    await Services.AlertService.ShowAlert("Error", "Failed to submit booking. There might be a schedule conflict.", parentWindow);
+                    await Services.AlertService.ShowAlert("Error", result.Message, parentWindow);
                 }
             }
             catch (Exception ex)

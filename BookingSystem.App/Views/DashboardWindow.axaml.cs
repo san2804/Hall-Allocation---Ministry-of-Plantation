@@ -11,14 +11,16 @@ namespace BookingSystem.App.Views
 {
     public partial class DashboardWindow : Window
     {
+        private bool _isAdmin;
         public DashboardWindow() : this(false, "User", "Role") { }
 
         public DashboardWindow(bool isAdmin, string fullName, string role)
         {
+            _isAdmin = isAdmin;
             InitializeComponent();
             this.DataContext = new ViewModels.DashboardWindowViewModel(isAdmin, fullName, role);
             // Set initial view
-            NavigateTo(new DashboardOverviewView(), "Dashboard", DashboardBtn);
+            NavigateTo(new DashboardOverviewView(isAdmin), "Dashboard", DashboardBtn);
         }
 
         private async void MenuBtn_Click(object? sender, RoutedEventArgs e)
@@ -58,7 +60,7 @@ namespace BookingSystem.App.Views
             switch (name)
             {
                 case "DashboardBtn":
-                    NavigateTo(new DashboardOverviewView(), "Dashboard", btn);
+                    NavigateTo(new DashboardOverviewView(_isAdmin), "Dashboard", btn);
                     break;
                 case "AvailabilityBtn":
                     NavigateTo(new CheckAvailabilityView(), "Check Availability", btn);

@@ -97,8 +97,10 @@
                     <StackPanel>
                         <Button Name="DashboardBtn" Classes="MenuBtn Active" Content="Dashboard" Click="MenuBtn_Click"/>
                         
+                        <!-- Shared -->
+                        <Button Name="AvailabilityBtn" Classes="MenuBtn" Content="Check Availability" Click="MenuBtn_Click"/>
+                        
                         <!-- Normal User Only -->
-                        <Button Name="AvailabilityBtn" Classes="MenuBtn" Content="Check Availability" Click="MenuBtn_Click" IsVisible="{Binding IsNormalUser}"/>
                         <Button Name="MyBookingsBtn" Classes="MenuBtn" Content="My Bookings" Click="MenuBtn_Click" IsVisible="{Binding IsNormalUser}"/>
                         <Button Name="NewBookingBtn" Classes="MenuBtn" Content="New Booking" Click="MenuBtn_Click" IsVisible="{Binding IsNormalUser}"/>
                         

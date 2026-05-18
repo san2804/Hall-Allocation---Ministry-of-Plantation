@@ -8,10 +8,12 @@ namespace BookingSystem.App.Views
 {
     public partial class DashboardOverviewView : UserControl
     {
-        public DashboardOverviewView()
+        public DashboardOverviewView() : this(false) { }
+
+        public DashboardOverviewView(bool isAdmin)
         {
             InitializeComponent();
-            var viewModel = new ViewModels.DashboardOverviewViewModel();
+            var viewModel = new ViewModels.DashboardOverviewViewModel(isAdmin);
             this.DataContext = viewModel;
             _ = viewModel.LoadDataCommand.ExecuteAsync(null);
         }

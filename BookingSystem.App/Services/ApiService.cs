@@ -99,10 +99,13 @@ public class ApiService
         return await GetAsync<List<BookingResponse>>($"bookings/hall/{hallId}?start={start:O}&end={end:O}");
     }
 
-    public async Task<bool> CreateBookingAsync(BookingRequest request)
+    public async Task<(bool Success, string Message)> CreateBookingAsync(BookingRequest request)
     {
         var response = await _httpClient.PostAsJsonAsync("bookings", request);
-        return response.IsSuccessStatusCode;
+        if (response.IsSuccessStatusCode) return (true, "Booking submitted successfully.");
+        
+        var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+        return (false, error?.Message ?? "Failed to submit booking.");
     }
 
     public async Task<bool> UpdateBookingStatusAsync(int bookingId, int status, string? remark = null)
@@ -128,10 +131,13 @@ public class ApiService
         return response.IsSuccessStatusCode;
     }
 
-    public async Task<bool> CreateUserAsync(CreateUserRequest request)
+    public async Task<(bool Success, string Message)> CreateUserAsync(CreateUserRequest request)
     {
         var response = await _httpClient.PostAsJsonAsync("users", request);
-        return response.IsSuccessStatusCode;
+        if (response.IsSuccessStatusCode) return (true, "User created successfully.");
+
+        var error = await response.Content.ReadFromJsonAsync<ApiErrorResponse>();
+        return (false, error?.Message ?? "Failed to create user.");
     }
 
     public async Task<bool> UpdateUserAsync(int id, UpdateUserRequest request)
@@ -164,6 +170,12 @@ public class ApiService
             return default;
         }
     }
+}
+
+public class ApiErrorResponse
+{
+    [JsonPropertyName("message")]
+    public string Message { get; set; } = "";
 }
 
 // DTOs for the App (Simplified)

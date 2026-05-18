@@ -91,8 +91,8 @@ public partial class ManageUsersViewModel : ViewModelBase
             Role = NewRole
         };
 
-        var success = await _apiService.CreateUserAsync(request);
-        if (success)
+        var result = await _apiService.CreateUserAsync(request);
+        if (result.Success)
         {
             await AlertService.ShowAlert("Success", $"User '{NewUsername}' created successfully.");
             // Reset fields
@@ -103,7 +103,7 @@ public partial class ManageUsersViewModel : ViewModelBase
         }
         else
         {
-            await AlertService.ShowAlert("Error", "Failed to create user. Username might already exist.");
+            await AlertService.ShowAlert("Error", result.Message);
         }
     }
 

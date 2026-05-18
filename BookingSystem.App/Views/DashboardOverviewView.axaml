@@ -75,25 +75,32 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/><ColumnDefinition Width="3*"/><ColumnDefinition Width="3*"/><ColumnDefinition Width="2*"/><ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="3*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="Date" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
-                            <TextBlock Grid.Row="0" Grid.Column="1" Text="Hall" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Time" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
-                            <TextBlock Grid.Row="0" Grid.Column="3" Text="Purpose" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
-                            <TextBlock Grid.Row="0" Grid.Column="4" Text="Status" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="Requested By" IsVisible="{Binding IsAdminMode}" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Hall" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="0" Grid.Column="3" Text="Time" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="0" Grid.Column="4" Text="Purpose" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="0" Grid.Column="5" Text="Status" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
                             
-                            <Border Grid.Row="1" Grid.ColumnSpan="5" BorderBrush="#EEEEEE" BorderThickness="0,0,0,1" Margin="0,0,0,10" Padding="0,0,0,10"/>
+                            <Border Grid.Row="1" Grid.ColumnSpan="6" BorderBrush="#EEEEEE" BorderThickness="0,0,0,1" Margin="0,0,0,10" Padding="0,0,0,10"/>
                         </Grid>
 
                         <ItemsControl ItemsSource="{Binding UpcomingBookings}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate x:DataType="svc:BookingResponse">
-                                    <Grid ColumnDefinitions="2*, 3*, 3*, 2*, Auto" Margin="0,5">
+                                    <Grid ColumnDefinitions="2*, 2*, 3*, 3*, 2*, Auto" Margin="0,5">
                                         <TextBlock Grid.Column="0" Text="{Binding StartTime, StringFormat=\{0:dd MMM yyyy\}}" VerticalAlignment="Center" Foreground="#333"/>
-                                        <TextBlock Grid.Column="1" Text="{Binding HallName}" VerticalAlignment="Center" Foreground="#333"/>
-                                        <TextBlock Grid.Column="2" VerticalAlignment="Center" Foreground="#333">
+                                        <TextBlock Grid.Column="1" Text="{Binding UserFullName}" IsVisible="{Binding $parent[UserControl].((vm:DashboardOverviewViewModel)DataContext).IsAdminMode}" VerticalAlignment="Center" Foreground="#333"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding HallName}" VerticalAlignment="Center" Foreground="#333"/>
+                                        <TextBlock Grid.Column="3" VerticalAlignment="Center" Foreground="#333">
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}{0:hh:mm tt} - {1:hh:mm tt}">
                                                     <Binding Path="StartTime"/>
@@ -101,8 +108,8 @@
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
-                                        <TextBlock Grid.Column="3" Text="{Binding Purpose}" VerticalAlignment="Center" Foreground="#333"/>
-                                        <Border Grid.Column="4" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                        <TextBlock Grid.Column="4" Text="{Binding Purpose}" VerticalAlignment="Center" Foreground="#333"/>
+                                        <Border Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Left">
                                             <Border.Styles>
                                                 <Style Selector="Border">
                                                     <Setter Property="Background" Value="#FFF7E6"/>

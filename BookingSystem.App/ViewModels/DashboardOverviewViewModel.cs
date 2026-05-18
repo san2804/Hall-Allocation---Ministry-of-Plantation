@@ -10,6 +10,7 @@ namespace BookingSystem.App.ViewModels;
 public partial class DashboardOverviewViewModel : ViewModelBase
 {
     private readonly ApiService _apiService;
+    private readonly bool _isAdmin;
 
     [ObservableProperty]
     private int _totalBookings;
@@ -23,12 +24,15 @@ public partial class DashboardOverviewViewModel : ViewModelBase
     [ObservableProperty]
     private int _thisMonthBookings;
 
+    public bool IsAdminMode => _isAdmin;
+
     [ObservableProperty]
     private ObservableCollection<BookingResponse> _upcomingBookings = new();
 
-    public DashboardOverviewViewModel()
+    public DashboardOverviewViewModel(bool isAdmin)
     {
         _apiService = new ApiService();
+        _isAdmin = isAdmin;
         LoadDataCommand = new AsyncRelayCommand(LoadDataAsync);
     }
 
@@ -45,7 +49,11 @@ public partial class DashboardOverviewViewModel : ViewModelBase
             ThisMonthBookings = stats.ThisMonthBookings;
         }
 
-        var bookings = await _apiService.GetMyBookingsAsync();
+        // If Admin, fetch ALL bookings, otherwise just MY bookings
+        var bookings = _isAdmin 
+            ? await _apiService.GetAllBookingsAsync() 
+            : await _apiService.GetMyBookingsAsync();
+
         if (bookings != null)
         {
             UpcomingBookings.Clear();
@@ -56,7 +64,8 @@ public partial class DashboardOverviewViewModel : ViewModelBase
                 b.StartTime = b.StartTime.ToLocalTime();
                 b.EndTime = b.EndTime.ToLocalTime();
 
-                // Show both Pending (0) and Approved (1) bookings
+                // Show both Pending (0) and Approved (1) bookings for upcoming section
+                // Note: Filter for future bookings only
                 if (b.StartTime > now && (b.Status == 0 || b.Status == 1))
                 {
                     UpcomingBookings.Add(b);

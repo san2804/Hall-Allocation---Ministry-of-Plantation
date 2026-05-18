@@ -2,8 +2,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:BookingSystem.App.ViewModels"
              mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
-             x:Class="BookingSystem.App.Views.ProfileView">
+             x:Class="BookingSystem.App.Views.ProfileView"
+             x:DataType="vm:ProfileViewModel">
 
     <UserControl.Styles>
         <Style Selector="TextBlock.FieldLabel">
@@ -43,12 +45,12 @@
                 <StackPanel Orientation="Horizontal" Spacing="30">
                     <!-- User Avatar Placeholder -->
                     <Border Width="120" Height="120" CornerRadius="60" Background="#F0F0F0">
-                        <TextBlock Text="NP" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="40" FontWeight="Bold" Foreground="#666666"/>
+                        <TextBlock Text="{Binding Initials}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="40" FontWeight="Bold" Foreground="#666666"/>
                     </Border>
                     
                     <StackPanel VerticalAlignment="Center" Spacing="10">
-                        <TextBlock Text="Nimal Perera" FontSize="28" FontWeight="Bold" Foreground="#1A1A1A"/>
-                        <TextBlock Text="Administrative Officer" FontSize="16" Foreground="#1a5d38" FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding FullName}" FontSize="28" FontWeight="Bold" Foreground="#1A1A1A"/>
+                        <TextBlock Text="{Binding Role}" FontSize="16" Foreground="#1a5d38" FontWeight="SemiBold"/>
                         <TextBlock Text="Ministry of Plantation, Sri Lanka" FontSize="14" Foreground="#666"/>
                         
                         <StackPanel Orientation="Horizontal" Spacing="15" Margin="0,10,0,0">
@@ -68,25 +70,22 @@
                         
                         <StackPanel>
                             <TextBlock Text="Full Name" Classes="FieldLabel"/>
-                            <TextBox Text="Nimal Perera" IsEnabled="False"/>
+                            <TextBox Text="{Binding FullName}"/>
                         </StackPanel>
 
                         <StackPanel>
-                            <TextBlock Text="Email Address" Classes="FieldLabel"/>
-                            <TextBox Text="nimal.perera@plantation.gov.lk" IsEnabled="False"/>
+                            <TextBlock Text="Username" Classes="FieldLabel"/>
+                            <TextBox Text="{Binding Username}" IsEnabled="False"/>
                         </StackPanel>
 
                         <StackPanel>
-                            <TextBlock Text="Phone Number" Classes="FieldLabel"/>
-                            <TextBox Text="+94 11 234 5678" />
+                            <TextBlock Text="Role / Designation" Classes="FieldLabel"/>
+                            <TextBox Text="{Binding Role}" IsEnabled="False"/>
                         </StackPanel>
 
-                        <StackPanel>
-                            <TextBlock Text="Designation" Classes="FieldLabel"/>
-                            <TextBox Text="Administrative Officer" IsEnabled="False"/>
-                        </StackPanel>
-
-                        <Button Content="Save Changes" Classes="Primary" HorizontalAlignment="Right"/>
+                        <Button Content="Save Changes" 
+                                Command="{Binding UpdateProfileCommand}"
+                                Classes="Primary" HorizontalAlignment="Right"/>
                     </StackPanel>
                 </Border>
 
@@ -99,21 +98,18 @@
                             <TextBlock Text="Change Password" FontWeight="SemiBold" Foreground="#333"/>
                             
                             <StackPanel>
-                                <TextBlock Text="Current Password" Classes="FieldLabel"/>
-                                <TextBox PasswordChar="•" PlaceholderText="••••••••"/>
-                            </StackPanel>
-
-                            <StackPanel>
                                 <TextBlock Text="New Password" Classes="FieldLabel"/>
-                                <TextBox PasswordChar="•" PlaceholderText="••••••••"/>
+                                <TextBox Text="{Binding NewPassword}" PasswordChar="•" PlaceholderText="••••••••"/>
                             </StackPanel>
 
                             <StackPanel>
                                 <TextBlock Text="Confirm New Password" Classes="FieldLabel"/>
-                                <TextBox PasswordChar="•" PlaceholderText="••••••••"/>
+                                <TextBox Text="{Binding ConfirmPassword}" PasswordChar="•" PlaceholderText="••••••••"/>
                             </StackPanel>
 
-                            <Button Content="Update Password" Classes="Primary" HorizontalAlignment="Right" Margin="0,10,0,0"/>
+                            <Button Content="Update Password" 
+                                    Command="{Binding UpdatePasswordCommand}"
+                                    Classes="Primary" HorizontalAlignment="Right" Margin="0,10,0,0"/>
                         </StackPanel>
                         
                         <Separator Background="#F0F0F0" Margin="0,10"/>

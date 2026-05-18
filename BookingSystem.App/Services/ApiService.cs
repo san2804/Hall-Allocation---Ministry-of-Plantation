@@ -111,6 +111,41 @@ public class ApiService
         return response.IsSuccessStatusCode;
     }
 
+    // Users
+    public async Task<List<UserDto>?> GetUsersAsync()
+    {
+        return await GetAsync<List<UserDto>>("users");
+    }
+
+    public async Task<UserDto?> GetMyProfileAsync()
+    {
+        return await GetAsync<UserDto>("users/me");
+    }
+
+    public async Task<bool> UpdateMyProfileAsync(UpdateUserRequest request)
+    {
+        var response = await _httpClient.PutAsJsonAsync("users/me", request);
+        return response.IsSuccessStatusCode;
+    }
+
+    public async Task<bool> CreateUserAsync(CreateUserRequest request)
+    {
+        var response = await _httpClient.PostAsJsonAsync("users", request);
+        return response.IsSuccessStatusCode;
+    }
+
+    public async Task<bool> UpdateUserAsync(int id, UpdateUserRequest request)
+    {
+        var response = await _httpClient.PutAsJsonAsync($"users/{id}", request);
+        return response.IsSuccessStatusCode;
+    }
+
+    public async Task<bool> DeleteUserAsync(int id)
+    {
+        var response = await _httpClient.DeleteAsync($"users/{id}");
+        return response.IsSuccessStatusCode;
+    }
+
     public void Logout()
     {
         _token = null;
@@ -164,4 +199,49 @@ public class BookingResponse
     public DateTime EndTime { get; set; } 
     public string Purpose { get; set; } = ""; 
     public int Status { get; set; } // 0: Pending, 1: Approved...
+}
+
+public class UserDto
+{
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
+    
+    [JsonPropertyName("username")]
+    public string Username { get; set; } = "";
+    
+    [JsonPropertyName("fullName")]
+    public string FullName { get; set; } = "";
+    
+    [JsonPropertyName("role")]
+    public string Role { get; set; } = "";
+    
+    [JsonPropertyName("createdAt")]
+    public DateTime CreatedAt { get; set; }
+}
+
+public class CreateUserRequest
+{
+    [JsonPropertyName("username")]
+    public string Username { get; set; } = "";
+    
+    [JsonPropertyName("fullName")]
+    public string FullName { get; set; } = "";
+    
+    [JsonPropertyName("password")]
+    public string Password { get; set; } = "";
+    
+    [JsonPropertyName("role")]
+    public string Role { get; set; } = "Officer";
+}
+
+public class UpdateUserRequest
+{
+    [JsonPropertyName("fullName")]
+    public string FullName { get; set; } = "";
+    
+    [JsonPropertyName("role")]
+    public string Role { get; set; } = "";
+    
+    [JsonPropertyName("password")]
+    public string? Password { get; set; }
 }

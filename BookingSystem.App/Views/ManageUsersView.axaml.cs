@@ -7,6 +7,9 @@ namespace BookingSystem.App.Views
         public ManageUsersView()
         {
             InitializeComponent();
+            var viewModel = new ViewModels.ManageUsersViewModel();
+            this.DataContext = viewModel;
+            _ = viewModel.LoadUsersCommand.ExecuteAsync(null);
         }
     }
 }

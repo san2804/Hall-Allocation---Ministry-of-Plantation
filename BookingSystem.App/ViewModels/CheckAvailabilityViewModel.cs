@@ -28,6 +28,12 @@ public partial class CheckAvailabilityViewModel : ViewModelBase
     [ObservableProperty]
     private HallResponse? _selectedHall;
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsDetailsVisible))]
+    private CalendarDayViewModel? _selectedDay;
+
+    public bool IsDetailsVisible => SelectedDay != null;
+
     public CheckAvailabilityViewModel()
     {
         _apiService = new ApiService();
@@ -43,6 +49,21 @@ public partial class CheckAvailabilityViewModel : ViewModelBase
     public IRelayCommand PreviousMonthCommand { get; }
     public IRelayCommand TodayCommand { get; }
 
+    [RelayCommand]
+    private void SelectDay(CalendarDayViewModel day)
+    {
+        if (SelectedDay != null) SelectedDay.IsSelected = false;
+        SelectedDay = day;
+        SelectedDay.IsSelected = true;
+    }
+
+    [RelayCommand]
+    private void CloseDetails()
+    {
+        if (SelectedDay != null) SelectedDay.IsSelected = false;
+        SelectedDay = null;
+    }
+
     private async Task LoadHallsAsync()
     {
         var halls = await _apiService.GetHallsAsync();
@@ -56,6 +77,7 @@ public partial class CheckAvailabilityViewModel : ViewModelBase
 
     partial void OnSelectedHallChanged(HallResponse? value)
     {
+        SelectedDay = null;
         _ = RefreshCalendarAsync();
     }
 
@@ -63,6 +85,7 @@ public partial class CheckAvailabilityViewModel : ViewModelBase
     {
         CurrentDate = CurrentDate.AddMonths(1);
         MonthYearText = CurrentDate.ToString("MMMM yyyy");
+        SelectedDay = null;
         _ = RefreshCalendarAsync();
     }
 
@@ -70,6 +93,7 @@ public partial class CheckAvailabilityViewModel : ViewModelBase
     {
         CurrentDate = CurrentDate.AddMonths(-1);
         MonthYearText = CurrentDate.ToString("MMMM yyyy");
+        SelectedDay = null;
         _ = RefreshCalendarAsync();
     }
 
@@ -77,6 +101,7 @@ public partial class CheckAvailabilityViewModel : ViewModelBase
     {
         CurrentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         MonthYearText = CurrentDate.ToString("MMMM yyyy");
+        SelectedDay = null;
         _ = RefreshCalendarAsync();
     }
 
@@ -134,6 +159,9 @@ public partial class CalendarDayViewModel : ObservableObject
 
     [ObservableProperty]
     private bool _isCurrentMonth;
+
+    [ObservableProperty]
+    private bool _isSelected;
 
     [ObservableProperty]
     private ObservableCollection<BookingResponse> _bookings = new();

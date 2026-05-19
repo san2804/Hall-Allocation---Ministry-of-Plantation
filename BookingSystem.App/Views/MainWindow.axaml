@@ -71,7 +71,7 @@
                     </TextBlock>
                 </StackPanel>
 
-                <TextBlock Grid.Row="2" Text="© 2024 Ministry of Plantation. All rights reserved." Foreground="#999999" FontSize="13" HorizontalAlignment="Center" />
+                <TextBlock Grid.Row="2" Text="© 2026 Ministry of Plantation. All rights reserved." Foreground="#999999" FontSize="13" HorizontalAlignment="Center" />
             </Grid>
         </Border>
     </Grid>

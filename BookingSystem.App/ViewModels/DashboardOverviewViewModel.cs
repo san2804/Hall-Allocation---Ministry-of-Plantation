@@ -63,6 +63,7 @@ public partial class DashboardOverviewViewModel : ViewModelBase
                 // Ensure times are local for both comparison and display
                 b.StartTime = b.StartTime.ToLocalTime();
                 b.EndTime = b.EndTime.ToLocalTime();
+                b.CreatedAt = b.CreatedAt.ToLocalTime();
 
                 // Show both Pending (0) and Approved (1) bookings for upcoming section
                 // Note: Filter for future bookings only

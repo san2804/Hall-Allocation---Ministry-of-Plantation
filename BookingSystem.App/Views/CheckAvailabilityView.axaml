@@ -7,6 +7,7 @@
              x:Class="BookingSystem.App.Views.CheckAvailabilityView"
              x:DataType="vm:CheckAvailabilityViewModel"
              xmlns:conv="clr-namespace:BookingSystem.App.Converters"
+             xmlns:svc="clr-namespace:BookingSystem.App.Services"
              Background="Transparent">
 
     <UserControl.Resources>
@@ -32,6 +33,11 @@
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="MinHeight" Value="100"/>
             <Setter Property="Padding" Value="10"/>
+        </Style>
+        <Style Selector="Border.CalendarDay.Selected">
+            <Setter Property="BorderBrush" Value="#1a73e8"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="ZIndex" Value="10"/>
         </Style>
         <Style Selector="TextBlock.DayNumber">
             <Setter Property="FontSize" Value="16"/>
@@ -63,106 +69,236 @@
             <Setter Property="PlaceholderForeground" Value="#999999"/>
             <Setter Property="Background" Value="White"/>
         </Style>
+
+        <!-- Clickable Calendar Day -->
+        <Style Selector="Button.CalendarDayButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <ContentPresenter Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Content="{TemplateBinding Content}"
+                                    Padding="{TemplateBinding Padding}"/>
+                </ControlTemplate>
+            </Setter>
+        </Style>
     </UserControl.Styles>
 
-    <StackPanel Spacing="25">
-        <!-- Header Controls -->
-        <Border Background="White" CornerRadius="10" Padding="20" BoxShadow="0 2 5 0 #0A000000">
-            <Grid ColumnDefinitions="Auto, Auto, *, Auto">
-                <StackPanel Grid.Column="0" Spacing="8">
-                    <TextBlock Text="Conference Hall" FontWeight="SemiBold" FontSize="14" Foreground="#333"/>
-                    <ComboBox ItemsSource="{Binding Halls}" 
-                              SelectedItem="{Binding SelectedHall}"
-                              Width="250"
-                              Background="#F8F9FA" 
-                              BorderBrush="#E0E0E0" 
-                              BorderThickness="1">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Name}"/>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </StackPanel>
+    <Grid ColumnDefinitions="*, Auto">
+        <!-- Main Content -->
+        <ScrollViewer Grid.Column="0">
+            <StackPanel Spacing="25" Margin="20">
+                <!-- Header Controls -->
+                <Border Background="White" CornerRadius="10" Padding="20" BoxShadow="0 2 5 0 #0A000000">
+                    <Grid ColumnDefinitions="Auto, Auto, *, Auto">
+                        <StackPanel Grid.Column="0" Spacing="8">
+                            <TextBlock Text="Conference Hall" FontWeight="SemiBold" FontSize="14" Foreground="#333"/>
+                            <ComboBox ItemsSource="{Binding Halls}" 
+                                      SelectedItem="{Binding SelectedHall}"
+                                      Width="250"
+                                      Background="#F8F9FA" 
+                                      BorderBrush="#E0E0E0" 
+                                      BorderThickness="1">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
 
-                <Button Grid.Column="1" Content="Today" Command="{Binding TodayCommand}" Margin="20,25,0,0" Background="#F0F0F0" Foreground="#333" Padding="15,8" FontWeight="Medium"/>
+                        <Button Grid.Column="1" Content="Today" Command="{Binding TodayCommand}" Margin="20,25,0,0" Background="#F0F0F0" Foreground="#333" Padding="15,8" FontWeight="Medium"/>
 
-                <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Bottom" Spacing="15">
-                    <Button Content="‹" Command="{Binding PreviousMonthCommand}" FontSize="20" Background="Transparent" Padding="10,0" Foreground="#333"/>
-                    <TextBlock Text="{Binding MonthYearText}" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="#1A1A1A" Width="150" TextAlignment="Center"/>
-                    <Button Content="›" Command="{Binding NextMonthCommand}" FontSize="20" Background="Transparent" Padding="10,0" Foreground="#333"/>
+                        <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Bottom" Spacing="15">
+                            <Button Content="‹" Command="{Binding PreviousMonthCommand}" FontSize="20" Background="Transparent" Padding="10,0" Foreground="#333"/>
+                            <TextBlock Text="{Binding MonthYearText}" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="#1A1A1A" Width="150" TextAlignment="Center"/>
+                            <Button Content="›" Command="{Binding NextMonthCommand}" FontSize="20" Background="Transparent" Padding="10,0" Foreground="#333"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Calendar Container -->
+                <Border Background="White" CornerRadius="10" Padding="1" BoxShadow="0 4 10 0 #0D000000" ClipToBounds="True">
+                    <StackPanel>
+                        <!-- Day of Week Headers -->
+                        <UniformGrid Columns="7" Background="#F8F9FA" Height="50">
+                            <TextBlock Text="SUN" Classes="DayHeader" VerticalAlignment="Center"/>
+                            <TextBlock Text="MON" Classes="DayHeader" VerticalAlignment="Center"/>
+                            <TextBlock Text="TUE" Classes="DayHeader" VerticalAlignment="Center"/>
+                            <TextBlock Text="WED" Classes="DayHeader" VerticalAlignment="Center"/>
+                            <TextBlock Text="THU" Classes="DayHeader" VerticalAlignment="Center"/>
+                            <TextBlock Text="FRI" Classes="DayHeader" VerticalAlignment="Center"/>
+                            <TextBlock Text="SAT" Classes="DayHeader" VerticalAlignment="Center"/>
+                        </UniformGrid>
+
+                        <!-- Calendar Grid -->
+                        <ItemsControl ItemsSource="{Binding Days}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="7"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="vm:CalendarDayViewModel">
+                                    <Button Classes="CalendarDayButton"
+                                            Command="{Binding $parent[ItemsControl].((vm:CheckAvailabilityViewModel)DataContext).SelectDayCommand}"
+                                            CommandParameter="{Binding}">
+                                        <Border Classes="CalendarDay" 
+                                                Classes.Selected="{Binding IsSelected}"
+                                                Opacity="{Binding Opacity}">
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding DayNumber}" Classes="DayNumber"/>
+                                                    <ItemsControl ItemsSource="{Binding Bookings}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate x:DataType="svc:BookingResponse">
+                                                            <Border Classes="BookingTag" Background="{Binding $parent[Border;1].((vm:CalendarDayViewModel)DataContext).StatusColor}">
+                                                                <StackPanel>
+                                                                    <TextBlock FontWeight="Bold" FontSize="10" Foreground="{Binding $parent[Border;1].((vm:CalendarDayViewModel)DataContext).TextColor}">
+                                                                        <TextBlock.Text>
+                                                                            <MultiBinding StringFormat="{}{0:HH:mm} - {1:HH:mm}">
+                                                                                <Binding Path="StartTime"/>
+                                                                                <Binding Path="EndTime"/>
+                                                                            </MultiBinding>
+                                                                        </TextBlock.Text>
+                                                                    </TextBlock>
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="{Binding Purpose}" 
+                                                                                 Classes="BookingTagText" 
+                                                                                 Foreground="{Binding $parent[Border;1].((vm:CalendarDayViewModel)DataContext).TextColor}"
+                                                                                 TextWrapping="NoWrap"
+                                                                                 TextTrimming="CharacterEllipsis"/>
+                                                                        <TextBlock Text=" (P)" 
+                                                                                 FontSize="10"
+                                                                                 VerticalAlignment="Center"
+                                                                                 IsVisible="{Binding Status, Converter={StaticResource StatusToPendingConverter}}"
+                                                                                 Foreground="{Binding $parent[Border;1].((vm:CalendarDayViewModel)DataContext).TextColor}"/>
+                                                                    </StackPanel>
+                                                                </StackPanel>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </Border>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- Legend -->
+                <StackPanel Orientation="Horizontal" Spacing="30">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Fill="#E6F4EA" Classes="Indicator"/>
+                        <TextBlock Text="Available" VerticalAlignment="Center" Foreground="#666"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Fill="#FFF7E6" Classes="Indicator"/>
+                        <TextBlock Text="Partially Booked" VerticalAlignment="Center" Foreground="#666"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Fill="#FCE8E8" Classes="Indicator"/>
+                        <TextBlock Text="Fully Booked" VerticalAlignment="Center" Foreground="#666"/>
+                    </StackPanel>
                 </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Details Panel -->
+        <Border Grid.Column="1" Width="400" Background="White" BorderBrush="#E0E0E0" BorderThickness="1,0,0,0"
+                IsVisible="{Binding IsDetailsVisible}">
+            <Grid RowDefinitions="Auto, *">
+                <Border Grid.Row="0" Background="#F8F9FA" Padding="20" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                    <Grid ColumnDefinitions="*, Auto">
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Booking Details" FontSize="18" FontWeight="Bold" Foreground="#1A1A1A"/>
+                            <TextBlock Text="{Binding SelectedDay.Date, StringFormat='{}{0:MMMM dd, yyyy}'}" FontSize="14" Foreground="#666"/>
+                        </StackPanel>
+                        <Button Grid.Column="1" Content="✕" Command="{Binding CloseDetailsCommand}" Background="Transparent" FontSize="18" Foreground="#999"/>
+                    </Grid>
+                </Border>
+
+                <ScrollViewer Grid.Row="1" Padding="20">
+                    <StackPanel Spacing="20">
+                        <ItemsControl ItemsSource="{Binding SelectedDay.Bookings}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#F8F9FA" CornerRadius="8" Padding="15" Margin="0,0,0,15" BorderBrush="#EEE" BorderThickness="1">
+                                        <StackPanel Spacing="10">
+                                            <Grid ColumnDefinitions="*, Auto">
+                                                <TextBlock Grid.Column="0" Text="{Binding Purpose}" FontWeight="Bold" FontSize="16" Foreground="#333" TextWrapping="Wrap"/>
+                                                <Border Grid.Column="1" CornerRadius="4" Padding="8,4" VerticalAlignment="Top">
+                                                    <Border.Background>
+                                                        <Binding Path="Status">
+                                                            <Binding.Converter>
+                                                                <conv:EqualityConverter TargetValue="1" TrueValue="#E6F4EA" FalseValue="#FFF7E6"/>
+                                                            </Binding.Converter>
+                                                        </Binding>
+                                                    </Border.Background>
+                                                    <TextBlock FontSize="10" FontWeight="Bold">
+                                                        <TextBlock.Foreground>
+                                                            <Binding Path="Status">
+                                                                <Binding.Converter>
+                                                                    <conv:EqualityConverter TargetValue="1" TrueValue="#1E8E3E" FalseValue="#FA8C16"/>
+                                                                </Binding.Converter>
+                                                            </Binding>
+                                                        </TextBlock.Foreground>
+                                                        <TextBlock.Text>
+                                                            <Binding Path="Status">
+                                                                <Binding.Converter>
+                                                                    <conv:StatusToTextConverter/>
+                                                                </Binding.Converter>
+                                                            </Binding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+                                                </Border>
+                                            </Grid>
+
+                                            <Separator Background="#EEE" Height="1"/>
+
+                                            <Grid ColumnDefinitions="Auto, *">
+                                                <TextBlock Grid.Column="0" Text="Time:" FontWeight="SemiBold" Width="80" Foreground="#666"/>
+                                                <TextBlock Grid.Column="1" Foreground="#333">
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}{0:HH:mm} - {1:HH:mm}">
+                                                            <Binding Path="StartTime"/>
+                                                            <Binding Path="EndTime"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </Grid>
+
+                                            <Grid ColumnDefinitions="Auto, *">
+                                                <TextBlock Grid.Column="0" Text="Booked By:" FontWeight="SemiBold" Width="80" Foreground="#666"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding UserFullName}" Foreground="#333"/>
+                                            </Grid>
+
+                                            <StackPanel Spacing="5">
+                                                <TextBlock Text="Additional Info:" FontWeight="SemiBold" Foreground="#666"/>
+                                                <TextBlock Text="{Binding AdditionalInfo}" Foreground="#333" TextWrapping="Wrap" FontStyle="Italic"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Alternative for EmptyView -->
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,50,0,0" Spacing="10"
+                                    IsVisible="{Binding !SelectedDay.Bookings.Count}">
+                            <TextBlock Text="No bookings for this date" HorizontalAlignment="Center" Foreground="#999"/>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
         </Border>
-
-        <!-- Calendar Container -->
-        <Border Background="White" CornerRadius="10" Padding="1" BoxShadow="0 4 10 0 #0D000000" ClipToBounds="True">
-            <StackPanel>
-                <!-- Day of Week Headers -->
-                <UniformGrid Columns="7" Background="#F8F9FA" Height="50">
-                    <TextBlock Text="SUN" Classes="DayHeader" VerticalAlignment="Center"/>
-                    <TextBlock Text="MON" Classes="DayHeader" VerticalAlignment="Center"/>
-                    <TextBlock Text="TUE" Classes="DayHeader" VerticalAlignment="Center"/>
-                    <TextBlock Text="WED" Classes="DayHeader" VerticalAlignment="Center"/>
-                    <TextBlock Text="THU" Classes="DayHeader" VerticalAlignment="Center"/>
-                    <TextBlock Text="FRI" Classes="DayHeader" VerticalAlignment="Center"/>
-                    <TextBlock Text="SAT" Classes="DayHeader" VerticalAlignment="Center"/>
-                </UniformGrid>
-
-                <!-- Calendar Grid -->
-                <ItemsControl ItemsSource="{Binding Days}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <UniformGrid Columns="7"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate x:DataType="vm:CalendarDayViewModel">
-                            <Border Classes="CalendarDay" Opacity="{Binding Opacity}">
-                                <StackPanel>
-                                    <TextBlock Text="{Binding DayNumber}" Classes="DayNumber"/>
-                                        <ItemsControl ItemsSource="{Binding Bookings}">
-                                        <ItemsControl.ItemTemplate>
-                                            <DataTemplate>
-                                                <Border Classes="BookingTag" Background="{Binding $parent[Border;1].((vm:CalendarDayViewModel)DataContext).StatusColor}">
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <TextBlock Text="{Binding Purpose}" 
-                                                                 Classes="BookingTagText" 
-                                                                 Foreground="{Binding $parent[Border;1].((vm:CalendarDayViewModel)DataContext).TextColor}"
-                                                                 TextWrapping="NoWrap"
-                                                                 TextTrimming="CharacterEllipsis"/>
-                                                        <TextBlock Text=" (P)" 
-                                                                 FontSize="10"
-                                                                 VerticalAlignment="Center"
-                                                                 IsVisible="{Binding Status, Converter={StaticResource StatusToPendingConverter}}"
-                                                                 Foreground="{Binding $parent[Border;1].((vm:CalendarDayViewModel)DataContext).TextColor}"/>
-                                                    </StackPanel>
-                                                </Border>
-                                            </DataTemplate>
-                                        </ItemsControl.ItemTemplate>
-                                    </ItemsControl>
-                                </StackPanel>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
-        </Border>
-
-        <!-- Legend -->
-        <StackPanel Orientation="Horizontal" Spacing="30">
-            <StackPanel Orientation="Horizontal">
-                <Ellipse Fill="#E6F4EA" Classes="Indicator"/>
-                <TextBlock Text="Available" VerticalAlignment="Center" Foreground="#666"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Ellipse Fill="#FFF7E6" Classes="Indicator"/>
-                <TextBlock Text="Partially Booked" VerticalAlignment="Center" Foreground="#666"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <Ellipse Fill="#FCE8E8" Classes="Indicator"/>
-                <TextBlock Text="Fully Booked" VerticalAlignment="Center" Foreground="#666"/>
-            </StackPanel>
-        </StackPanel>
-    </StackPanel>
+    </Grid>
 </UserControl>

@@ -210,7 +210,9 @@ public class BookingResponse
     public DateTime StartTime { get; set; } 
     public DateTime EndTime { get; set; } 
     public string Purpose { get; set; } = ""; 
+    public string? AdditionalInfo { get; set; }
     public int Status { get; set; } // 0: Pending, 1: Approved...
+    public DateTime CreatedAt { get; set; }
 }
 
 public class UserDto

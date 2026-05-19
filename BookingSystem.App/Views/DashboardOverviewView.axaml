@@ -62,8 +62,8 @@
             </UniformGrid>
 
             <!-- Main Grid -->
-            <Grid ColumnDefinitions="2*, 1*">
-                <Border Grid.Column="0" Classes="Card" Margin="0,0,20,0" VerticalAlignment="Top">
+            <Grid ColumnDefinitions="*">
+                <Border Grid.Column="0" Classes="Card" VerticalAlignment="Top">
                     <StackPanel>
                         <Grid ColumnDefinitions="*, Auto" Margin="0,0,0,20">
                             <TextBlock Grid.Column="0" Text="Upcoming Bookings" FontSize="18" FontWeight="Bold" Foreground="#1A1A1A"/>
@@ -77,15 +77,15 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
                                 <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2.5*"/>
                                 <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="4*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             
                             <TextBlock Grid.Row="0" Grid.Column="0" Text="Date" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
                             <TextBlock Grid.Row="0" Grid.Column="1" Text="Requested By" IsVisible="{Binding IsAdminMode}" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
-                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Hall" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Requested At" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
                             <TextBlock Grid.Row="0" Grid.Column="3" Text="Time" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
                             <TextBlock Grid.Row="0" Grid.Column="4" Text="Purpose" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
                             <TextBlock Grid.Row="0" Grid.Column="5" Text="Status" FontWeight="SemiBold" Foreground="#666" Margin="0,0,0,10"/>
@@ -96,10 +96,10 @@
                         <ItemsControl ItemsSource="{Binding UpcomingBookings}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate x:DataType="svc:BookingResponse">
-                                    <Grid ColumnDefinitions="2*, 2*, 3*, 3*, 2*, Auto" Margin="0,5">
+                                    <Grid ColumnDefinitions="2*, 2*, 2.5*, 3*, 4*, Auto" Margin="0,5">
                                         <TextBlock Grid.Column="0" Text="{Binding StartTime, StringFormat=\{0:dd MMM yyyy\}}" VerticalAlignment="Center" Foreground="#333"/>
                                         <TextBlock Grid.Column="1" Text="{Binding UserFullName}" IsVisible="{Binding $parent[UserControl].((vm:DashboardOverviewViewModel)DataContext).IsAdminMode}" VerticalAlignment="Center" Foreground="#333"/>
-                                        <TextBlock Grid.Column="2" Text="{Binding HallName}" VerticalAlignment="Center" Foreground="#333"/>
+                                        <TextBlock Grid.Column="2" Text="{Binding CreatedAt, StringFormat=\{0:dd MMM yyyy HH:mm\}}" VerticalAlignment="Center" Foreground="#333"/>
                                         <TextBlock Grid.Column="3" VerticalAlignment="Center" Foreground="#333">
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}{0:hh:mm tt} - {1:hh:mm tt}">
@@ -108,7 +108,7 @@
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
-                                        <TextBlock Grid.Column="4" Text="{Binding Purpose}" VerticalAlignment="Center" Foreground="#333"/>
+                                        <TextBlock Grid.Column="4" Text="{Binding Purpose}" VerticalAlignment="Center" Foreground="#333" TextWrapping="Wrap"/>
                                         <Border Grid.Column="5" VerticalAlignment="Center" HorizontalAlignment="Left">
                                             <Border.Styles>
                                                 <Style Selector="Border">
@@ -150,20 +150,6 @@
                                  IsVisible="{Binding !UpcomingBookings.Count}"/>
                     </StackPanel>
                 </Border>
-
-                <StackPanel Grid.Column="1" Spacing="20">
-                    <Border Classes="Card">
-                        <StackPanel>
-                            <TextBlock Text="Quick Actions" FontSize="18" FontWeight="Bold" Foreground="#1A1A1A" Margin="0,0,0,15"/>
-                            <UniformGrid Columns="2" Rows="2">
-                                <Button Name="QuickAvailabilityBtn" Click="QuickAction_Click" Classes="QuickAction" Content="Check Availability" Margin="0,0,10,10"/>
-                                <Button Name="QuickNewBookingBtn" Click="QuickAction_Click" Classes="QuickAction" Content="New Booking" Margin="0,0,0,10"/>
-                                <Button Name="QuickMyBookingsBtn" Click="QuickAction_Click" Classes="QuickAction" Content="My Bookings" Margin="0,0,10,0"/>
-                                <Button Name="QuickHallsBtn" Click="QuickAction_Click" Classes="QuickAction" Content="View Halls"/>
-                            </UniformGrid>
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
             </Grid>
         </StackPanel>
     </ScrollViewer>

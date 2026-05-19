@@ -6,12 +6,25 @@ namespace BookingSystem.App.Converters;
 
 public class EqualityConverter : IValueConverter
 {
+    public object? TargetValue { get; set; }
+    public object? TrueValue { get; set; }
+    public object? FalseValue { get; set; }
+
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value == null && parameter == null) return true;
-        if (value == null || parameter == null) return false;
+        bool result;
+        var target = TargetValue ?? parameter;
 
-        return value.ToString() == parameter.ToString();
+        if (value == null && target == null) result = true;
+        else if (value == null || target == null) result = false;
+        else result = value.ToString() == target.ToString();
+
+        if (TrueValue != null || FalseValue != null)
+        {
+            return result ? TrueValue : FalseValue;
+        }
+
+        return result;
     }
 
     public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)

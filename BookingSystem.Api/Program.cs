@@ -28,6 +28,7 @@ builder.Services.AddScoped<BookingSystem.Api.Services.Interfaces.IHallService, B
 builder.Services.AddScoped<BookingSystem.Api.Services.Interfaces.IBookingService, BookingSystem.Api.Services.BookingService>();
 builder.Services.AddScoped<BookingSystem.Api.Services.Interfaces.IDashboardService, BookingSystem.Api.Services.DashboardService>();
 builder.Services.AddScoped<BookingSystem.Api.Services.Interfaces.IUserService, BookingSystem.Api.Services.UserService>();
+builder.Services.AddScoped<BookingSystem.Api.Services.Interfaces.IReportExportService, BookingSystem.Api.Services.ReportExportService>();
 
 // Database Context
 builder.Services.AddDbContext<AppDbContext>(options =>

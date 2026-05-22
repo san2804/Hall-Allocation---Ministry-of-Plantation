@@ -77,6 +77,38 @@ public class ApiService
         return await GetAsync<DashboardStats>("dashboard/stats");
     }
 
+    public async Task<ReportStats?> GetReportStatsAsync(DateTime? fromDate = null, DateTime? toDate = null)
+    {
+        string url = "dashboard/reports";
+        if (fromDate.HasValue || toDate.HasValue)
+        {
+            url += "?";
+            if (fromDate.HasValue) url += $"fromDate={fromDate.Value:O}&";
+            if (toDate.HasValue) url += $"toDate={toDate.Value:O}";
+        }
+        return await GetAsync<ReportStats>(url);
+    }
+
+    public async Task<byte[]?> ExportReportToExcelAsync(DateTime? fromDate = null, DateTime? toDate = null)
+    {
+        string url = "dashboard/export/excel";
+        if (fromDate.HasValue || toDate.HasValue)
+        {
+            url += "?";
+            if (fromDate.HasValue) url += $"fromDate={fromDate.Value:O}&";
+            if (toDate.HasValue) url += $"toDate={toDate.Value:O}";
+        }
+        
+        try
+        {
+            return await _httpClient.GetByteArrayAsync(url);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
     // Halls
     public async Task<List<HallResponse>?> GetHallsAsync()
     {
@@ -200,6 +232,31 @@ public class AuthResponse
     public string Role { get; set; } = "";
 }
 public class DashboardStats { public int TotalBookings { get; set; } public int UpcomingBookings { get; set; } public int PendingApprovals { get; set; } public int ThisMonthBookings { get; set; } }
+
+public class ReportStats
+{
+    public int TotalBookings { get; set; }
+    public int ApprovedBookings { get; set; }
+    public int PendingBookings { get; set; }
+    public int RejectedBookings { get; set; }
+    public int CancelledBookings { get; set; }
+    public List<PurposeStat> ByPurpose { get; set; } = new();
+    public List<MonthlyOccupancyStat> MonthlyOccupancy { get; set; } = new();
+}
+
+public class PurposeStat
+{
+    public string Purpose { get; set; } = string.Empty;
+    public int Count { get; set; }
+    public double Percentage { get; set; }
+}
+
+public class MonthlyOccupancyStat
+{
+    public string Month { get; set; } = string.Empty;
+    public double Percentage { get; set; }
+}
+
 public class HallResponse { public int Id { get; set; } public string Name { get; set; } = ""; public int Capacity { get; set; } public string Location { get; set; } = ""; public string Facilities { get; set; } = ""; }
 public class BookingRequest { public int HallId { get; set; } public DateTime StartTime { get; set; } public DateTime EndTime { get; set; } public string Purpose { get; set; } = ""; public string? AdditionalInfo { get; set; } }
 public class BookingResponse 

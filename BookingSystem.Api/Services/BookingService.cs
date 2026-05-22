@@ -97,13 +97,22 @@ public class BookingService : IBookingService
         return DateTime.SpecifyKind(dateTime, DateTimeKind.Local).ToUniversalTime();
     }
 
-    public async Task<bool> UpdateStatusAsync(int id, BookingStatus status, string? remark)
+    public async Task<bool> UpdateStatusAsync(int id, BookingStatus status, string? remark, string userId, bool isAdmin)
     {
         var booking = await _context.Bookings.FindAsync(id);
         if (booking == null) return false;
 
+        if (!isAdmin)
+        {
+            if (!int.TryParse(userId, out int parsedUserId) || booking.UserId != parsedUserId) return false;
+            if (status != BookingStatus.Cancelled) return false;
+        }
+
         booking.Status = status;
-        booking.AdminRemark = remark;
+        if (isAdmin)
+        {
+            booking.AdminRemark = remark;
+        }
         
         await _context.SaveChangesAsync();
         return true;

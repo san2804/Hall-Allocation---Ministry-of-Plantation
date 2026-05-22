@@ -60,10 +60,20 @@ public class BookingsController : ControllerBase
     }
 
     [HttpPut("{id}/status")]
-    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateStatus(int id, [FromBody] UpdateBookingStatusRequest request)
     {
-        var success = await _bookingService.UpdateStatusAsync(id, request.Status, request.AdminRemark);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null) return Unauthorized();
+
+        var isAdmin = User.IsInRole("Admin");
+
+        // Normal users can only cancel (status 3)
+        if (!isAdmin && (int)request.Status != 3)
+        {
+            return Forbid();
+        }
+
+        var success = await _bookingService.UpdateStatusAsync(id, request.Status, request.AdminRemark, userId, isAdmin);
         if (!success) return NotFound();
         return NoContent();
     }

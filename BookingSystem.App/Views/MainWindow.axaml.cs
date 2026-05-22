@@ -35,6 +35,13 @@ namespace BookingSystem.App.Views
             }
 
             var dashboard = new DashboardWindow(result.IsAdmin, result.FullName, result.Role);
+            
+            // Update the main window reference in the application lifetime
+            if (Avalonia.Application.Current?.ApplicationLifetime is Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                desktop.MainWindow = dashboard;
+            }
+
             dashboard.Show();
             this.Close();
         }

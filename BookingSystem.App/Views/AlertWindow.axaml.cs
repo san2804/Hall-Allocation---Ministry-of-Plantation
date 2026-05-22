@@ -20,7 +20,9 @@ namespace BookingSystem.App.Views
             dialog.MessageText.Text = message;
             dialog.Title = title;
 
-            if (owner != null) await dialog.ShowDialog(owner);
+            var activeOwner = owner ?? (Avalonia.Application.Current?.ApplicationLifetime as Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+
+            if (activeOwner != null) await dialog.ShowDialog(activeOwner);
             else dialog.Show();
         }
 
@@ -33,7 +35,9 @@ namespace BookingSystem.App.Views
             dialog.NoBtn.IsVisible = true;
             dialog.OkBtn.Content = "Yes";
 
-            if (owner != null) await dialog.ShowDialog(owner);
+            var activeOwner = owner ?? (Avalonia.Application.Current?.ApplicationLifetime as Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime)?.MainWindow;
+
+            if (activeOwner != null) await dialog.ShowDialog(activeOwner);
             else dialog.Show();
 
             return dialog._result;

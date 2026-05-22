@@ -60,11 +60,18 @@ public partial class ReportsViewModel : ViewModelBase
     [RelayCommand]
     private async Task ExportToExcelAsync()
     {
+        if (IsLoading) return;
+        
         IsLoading = true;
         try
         {
             var content = await _apiService.ExportReportToExcelAsync(FromDate?.DateTime, ToDate?.DateTime);
-            if (content == null) return;
+            
+            if (content == null || content.Length == 0)
+            {
+                await AlertService.ShowAlert("Export Error", "Failed to generate export file or no data available.");
+                return;
+            }
 
             if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
@@ -83,9 +90,18 @@ public partial class ReportsViewModel : ViewModelBase
                     {
                         using var stream = await file.OpenWriteAsync();
                         await stream.WriteAsync(content);
+                        await AlertService.ShowAlert("Success", "Report exported successfully!");
                     }
                 }
+                else
+                {
+                    await AlertService.ShowAlert("Export Error", "Could not access storage to save the file.");
+                }
             }
+        }
+        catch (Exception ex)
+        {
+            await AlertService.ShowAlert("Export Error", $"An unexpected error occurred: {ex.Message}");
         }
         finally
         {

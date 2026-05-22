@@ -33,6 +33,13 @@ namespace BookingSystem.App.Views
                 }
                 else if (btn.Content?.ToString() == "❌") // Reject/Cancel
                 {
+                    if (!_viewModel!.IsAdminMode)
+                    {
+                        var window = TopLevel.GetTopLevel(this) as Window;
+                        var confirm = await AlertService.ShowConfirm("Cancel Booking", "Are you sure, do you want to cancel the booking?", window);
+                        if (!confirm) return;
+                    }
+
                     // For rejection, we could show a dialog for remarks, but for now let's just update
                     await _viewModel!.UpdateStatusCommand.ExecuteAsync(new ViewModels.BookingStatusUpdateArgs
                     {

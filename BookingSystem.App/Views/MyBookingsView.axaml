@@ -48,13 +48,7 @@
         <!-- Header & Tabs -->
         <Border Background="White" CornerRadius="12" Padding="20,20,20,0" BoxShadow="0 2 5 0 #0A000000">
             <StackPanel Spacing="15">
-                <Grid ColumnDefinitions="*, Auto">
-                    <TextBlock Grid.Column="0" Text="My Bookings" FontSize="22" FontWeight="Bold" Foreground="#1A1A1A"/>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10">
-                        <TextBox Width="250" PlaceholderText="Search bookings..." InnerLeftContent="🔍"/>
-                        <Button Content="Filter" Background="#F0F0F0" Padding="15,8"/>
-                    </StackPanel>
-                </Grid>
+                <TextBlock Text="My Bookings" FontSize="22" FontWeight="Bold" Foreground="#1A1A1A"/>
 
                 <StackPanel Orientation="Horizontal" Spacing="5">
                     <Button Classes="TabBtn" Classes.Active="{Binding SelectedStatusFilter, Converter={StaticResource EqualityConverter}, ConverterParameter={x:Null}}" Content="All" Command="{Binding SetFilterCommand}" CommandParameter="{x:Null}"/>

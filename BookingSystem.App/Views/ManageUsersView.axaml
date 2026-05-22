@@ -46,12 +46,12 @@
                     <Grid ColumnDefinitions="*, 15, *, 20, Auto">
                         <StackPanel Grid.Column="0">
                             <TextBlock Text="Full Name" Classes="FieldLabel"/>
-                            <TextBox Text="{Binding NewFullName}" PlaceholderText="e.g. John Doe"/>
+                            <TextBox Text="{Binding NewFullName}" PlaceholderText="e.g. Shenal Fernando"/>
                         </StackPanel>
                         
                         <StackPanel Grid.Column="2">
                             <TextBlock Text="Username" Classes="FieldLabel"/>
-                            <TextBox Text="{Binding NewUsername}" PlaceholderText="e.g. john.d"/>
+                            <TextBox Text="{Binding NewUsername}" PlaceholderText="e.g. shenal@it"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="4" Orientation="Horizontal" Spacing="15">
